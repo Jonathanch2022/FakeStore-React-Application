@@ -318,3 +318,15 @@ Nav.Link{
         margin-top: 10px;
     }
 }
+.categorySelection{
+    width:250px;
+    height:35px;
+    padding-left:5px;
+    margin-left:10px;
+}
+#catagoryLabel{
+
+    font-weight:bolder;
+    color:white;
+    
+}

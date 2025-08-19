@@ -1,13 +1,16 @@
 import { Navbar, Nav, Container } from 'react-bootstrap'
-import {useNavigate} from "react-router-dom"
+import {useNavigate, useLocation,useSearchParams} from "react-router-dom"
 import cartIcon from "../assets/shoppingCart.png"
 import { Button } from 'react-bootstrap'
-
+import { createContext, useContext } from "react"
+import  CatagoryOption  from "../components/catagoryOption"
 export default function Header(props) {
 
     const navigate = useNavigate();
+    const { options } = useContext(HeaderContext);
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    
+    console.log(searchParams.get("category"));
     const handleSearchSubmit = (e) => {
 
         e.preventDefault();
@@ -55,7 +58,20 @@ export default function Header(props) {
         document.addEventListener("mousedown", handleCollapseCart);
 
     });
-   
+
+    let handleCategoryChange = (e) => {
+        let selectedValue = e.target.value;
+        let urlString = "/product-listing?";
+        // window.location.href = "/product-listing?category=" + selectedValue;
+        let searchValue = document.getElementById("search-input").value;
+        if (searchValue != "") {
+            urlString += "search=" + searchValue + "&" + "category=" + encodeURIComponent(selectedValue);
+        }
+        else {
+            urlString += "category=" + encodeURIComponent(selectedValue);
+        }
+        navigate(urlString);
+    }
     return (
       <>
            
@@ -87,6 +103,14 @@ export default function Header(props) {
                            
                             </Nav>
                         </Navbar.Collapse>
+                        <label id="catagoryLabel">Category:   
+                            <select className="categorySelection" onChange={handleCategoryChange}>
+                                <option value="All">All</option>
+                            {
+                                options
+                            }
+                        </select>
+                        </label>
                     </Container>
                 </Navbar>
             </header>
@@ -98,3 +122,4 @@ export default function Header(props) {
       </>
     )
 }
+export const HeaderContext = createContext();

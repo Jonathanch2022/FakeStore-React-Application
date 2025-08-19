@@ -1,9 +1,10 @@
-import {  useLocation, useSearchParams } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useLocation, useSearchParams } from 'react-router-dom'
+import { useState, useEffect, useContext, createContext } from 'react'
 import Header from "../components/Header.jsx"
 import Product from "../components/Product.jsx"
 import CartItem from "../components/CartItem.jsx"
 import Cart from "../components/Cart.jsx"
+
 async function getProducts() {
 
     let results = await fetch("https://fakestoreapi.com/products/").then((e) => {
@@ -88,7 +89,7 @@ export default function ProductListing() {
    
     const [cartItems, setCartItems] = useState(getCartItems() || []);
     const [searchParams, setSearchParams] = useSearchParams();
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState(productList);
     const location = useLocation();
     
     const handleRemove = (e) => {
@@ -151,7 +152,9 @@ export default function ProductListing() {
     }
     useEffect(() => { 
 
-        let search_keywords = searchParams.get("search");
+        let search_keywords = searchParams.get("search") || "";
+        let category = searchParams.get("category") || "";
+        console.log(category);
         if (search_keywords) {
 
             search_keywords = decodeURIComponent(search_keywords).toUpperCase();
@@ -161,20 +164,26 @@ export default function ProductListing() {
 
             if (data) {
 
-                if (search_keywords) {
 
-                    let list = data.filter((product) => 
 
-                       
-                            product.title.toUpperCase().includes(search_keywords)
-                        
+                if (search_keywords != null) {
+
+                    let list = data.filter((product) =>
+
+
+                        product.title.toUpperCase().includes(search_keywords)
+
+
                     )
                     setProducts(list);
+
+
                 }
+
                 else {
                     setProducts(data);
                 }
-               
+                
             }
             else {
 
@@ -219,3 +228,4 @@ export default function ProductListing() {
         </>
     )
 }
+export const productListingContext = createContext(null);
