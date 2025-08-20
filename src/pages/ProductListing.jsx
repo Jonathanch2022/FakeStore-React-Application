@@ -5,6 +5,8 @@ import Product from "../components/Product.jsx"
 import CartItem from "../components/CartItem.jsx"
 import Cart from "../components/Cart.jsx"
 
+
+
 async function getProducts() {
 
     let results = await fetch("https://fakestoreapi.com/products/").then((e) => {
@@ -143,19 +145,13 @@ export default function ProductListing() {
 
 
         }
-       
-
-
-        
-
-
-
 
 
     }
     useEffect(() => {
 
         setCartItems(getCartItems() || []);
+      
     }, []);
     useEffect(() => { 
 
