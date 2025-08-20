@@ -12,17 +12,18 @@ import {useState} from "react"
 
 export default function App() {
   
-    const options = [];
-    const productCollection = [];
+    let opt = [];
+    opt.push(<CategoryOption name="men's clothing" selected={false} key="Test-Options" value="men's clothing" />)
+    const [options, setOptions] = useState(opt);
     const [search, setSearch] = useState("");
-    const [shopCatagory, setShopCatagory] = useState("");
-    const [products, setProducts] = useState(productCollection);
+    const [shopCatagory, setShopCatagory] = useState("All");
+    const [products, setProducts] = useState([]);
     const [cartItems, setCartItems] = useState([]);
-    options.push(<CategoryOption name="men's clothing" selected={false} key="Test-Options" value="men's clothing" />);
-
+   
+ 
     return (
-        <productListingContext.Provider value={{ productCollection, search, setSearch, shopCatagory, setShopCatagory, products, setProducts, cartItems, setCartItems }}>
-        <HeaderContext.Provider value={{ options }}>
+        <productListingContext.Provider value={{ search, setSearch, shopCatagory, setShopCatagory, products, setProducts, cartItems, setCartItems }}>
+        <HeaderContext.Provider value={{ options,setOptions }}>
                 <Router>
                     <Routes>
                         <Route path="/" element={<Home />} />

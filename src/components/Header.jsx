@@ -10,7 +10,7 @@ export default function Header(props) {
 
     const navigate = useNavigate();
     const { options } = useContext(HeaderContext);
-    const { productCollection,products } = useContext(productListingContext); 
+    const {products,shopCatagory,setShopCatagory } = useContext(productListingContext); 
     const [searchParams, setSearchParams] = useSearchParams();
 
   
@@ -63,17 +63,18 @@ export default function Header(props) {
     });
 
     let handleCategoryChange = (e) => {
+        
         let selectedValue = e.target.value;
         let urlString = "/product-listing?";
         // window.location.href = "/product-listing?category=" + selectedValue;
         let searchValue = document.getElementById("search-input").value;
-        if (searchValue != "") {
-            urlString += "search=" + searchValue + "&" + "category=" + encodeURIComponent(selectedValue);
-        }
-        else {
-            urlString += "category=" + encodeURIComponent(selectedValue);
-        }
+        
+        urlString += "category=" + encodeURIComponent(selectedValue);
+        
         navigate(urlString);
+        
+        setShopCatagory(e.target.value);
+        
     }
     return (
       <>
