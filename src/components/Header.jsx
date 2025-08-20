@@ -3,14 +3,17 @@ import {useNavigate, useLocation,useSearchParams} from "react-router-dom"
 import cartIcon from "../assets/shoppingCart.png"
 import { Button } from 'react-bootstrap'
 import { createContext, useContext } from "react"
-import  CatagoryOption  from "../components/catagoryOption"
+import CatagoryOption from "../components/catagoryOption"
+import {productListingContext} from "../pages/ProductListing" 
+import { useEffect } from 'react'
 export default function Header(props) {
 
     const navigate = useNavigate();
     const { options } = useContext(HeaderContext);
+    const { productCollection,products } = useContext(productListingContext); 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    console.log(searchParams.get("category"));
+  
     const handleSearchSubmit = (e) => {
 
         e.preventDefault();

@@ -7,16 +7,21 @@ import ViewProduct  from "./pages/ViewProduct"
 import ProductListing, {productListingContext } from "./pages/ProductListing"
 import { HeaderContext } from "./components/Header.jsx"
 import CategoryOption from "./components/catagoryOption.jsx"
+import {useState} from "react"
 
 
 export default function App() {
   
     const options = [];
     const productCollection = [];
+    const [search, setSearch] = useState("");
+    const [shopCatagory, setShopCatagory] = useState("");
+    const [products, setProducts] = useState(productCollection);
+    const [cartItems, setCartItems] = useState([]);
     options.push(<CategoryOption name="men's clothing" selected={false} key="Test-Options" value="men's clothing" />);
 
     return (
-        <productListingContext.Provider value={{ productCollection }}>
+        <productListingContext.Provider value={{ productCollection, search, setSearch, shopCatagory, setShopCatagory, products, setProducts, cartItems, setCartItems }}>
         <HeaderContext.Provider value={{ options }}>
                 <Router>
                     <Routes>

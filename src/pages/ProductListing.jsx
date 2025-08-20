@@ -87,11 +87,11 @@ function getCartItems() {
 export default function ProductListing() {
 
    
-    const [cartItems, setCartItems] = useState(getCartItems() || []);
+   
     const [searchParams, setSearchParams] = useSearchParams();
-    const { productCollection } = useContext(productListingContext);
-    const [products, setProducts] = useState(productCollection);
-    const [search, setSearch] = useState(searchParams.get("search"));
+    const { productCollection, search, setSearch, shopCatagory, setShopCatagory, products, setProducts, cartItems, setCartItems } = useContext(productListingContext);
+    setCartItems(getCartItems() || []);
+   
     const location = useLocation();
     
     const handleRemove = (e) => {
