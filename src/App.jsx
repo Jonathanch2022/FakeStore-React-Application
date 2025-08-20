@@ -12,11 +12,11 @@ import CategoryOption from "./components/catagoryOption.jsx"
 export default function App() {
   
     const options = [];
-    const productList = [];
+    const productCollection = [];
     options.push(<CategoryOption name="men's clothing" selected={false} key="Test-Options" value="men's clothing" />);
 
     return (
-        <productListingContext.Provider value={{productList}}>
+        <productListingContext.Provider value={{ productCollection }}>
         <HeaderContext.Provider value={{ options }}>
                 <Router>
                     <Routes>
