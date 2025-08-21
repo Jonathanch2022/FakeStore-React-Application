@@ -88,6 +88,36 @@
     
     margin-top:5px;
 }
+.cart-total{
+
+    background-color:gold;
+    width:98%;
+    height:35px;
+    position:absolute;
+    bottom:5px;
+    display:inline;
+   
+    
+}
+.cart-total label:last-child{
+
+    float:left;
+    text-align:left;
+}
+.cart-total label:first-child{
+    float:right;
+    text-align:right;
+    padding-right:5px;
+}
+.cart-total label{
+    width:50%;
+    text-align:left;
+    padding-left:5px;
+    padding-top:5px;
+    height:100%;
+    font-weight:bolder;
+    font-size:16px;
+}
 @media(max-width:897px){
 
     .cart-container{

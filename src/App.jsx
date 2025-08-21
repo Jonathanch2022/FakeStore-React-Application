@@ -8,6 +8,7 @@ import ProductListing, {productListingContext } from "./pages/ProductListing"
 import { HeaderContext } from "./components/Header.jsx"
 import CategoryOption from "./components/catagoryOption.jsx"
 import { useState, useEffect } from "react"
+import { CartContext } from "./components/Cart.jsx";
 
 async function getCategories() {
 
@@ -33,6 +34,8 @@ export default function App() {
     const [shopCatagory, setShopCatagory] = useState("All");
     const [products, setProducts] = useState([]);
     const [cartItems, setCartItems] = useState([]);
+    const [cartTotle, setCartTotle] = useState(0);
+    const [cartItemCount, setCartItemCount] = useState(0);
 
     useEffect(() => {
 
@@ -49,6 +52,7 @@ export default function App() {
         
     },[])
     return (
+        <CartContext.Provider value={{ setCartItemCount, cartItemCount, cartTotle, setCartTotle }}>
         <productListingContext.Provider value={{ search, setSearch, shopCatagory, setShopCatagory, products, setProducts, cartItems, setCartItems }}>
         <HeaderContext.Provider value={{ options,setOptions }}>
                 <Router>
@@ -64,7 +68,8 @@ export default function App() {
 
                 </Router>
             </HeaderContext.Provider>
-        </productListingContext.Provider>
+            </productListingContext.Provider>
+        </CartContext.Provider>
 
 
     );

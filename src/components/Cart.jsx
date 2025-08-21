@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect,createContext,useContext } from "react"
 import "../css/cart.css"
 export default function Cart(props) {
 
+    const { setCartItemCount, cartItemCount, cartTotle, setCartTotle }  = useContext(CartContext);
 
     return (
         <>
@@ -9,7 +10,12 @@ export default function Cart(props) {
                 {
                     props.children
                 }
+                <div className="cart-total">
+                    <label id="totle">Total: {cartTotle}</label>
+                    <label id="items">Items: {cartItemCount}</label>
+                </div>
             </div>
         </>
     )
 }
+export const CartContext = createContext(null);
