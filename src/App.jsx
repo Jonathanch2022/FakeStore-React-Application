@@ -6,9 +6,10 @@ import EditProduct  from "./pages/EditProduct"
 import ViewProduct  from "./pages/ViewProduct"
 import ProductListing, {productListingContext } from "./pages/ProductListing"
 import { HeaderContext } from "./components/Header.jsx"
-import CategoryOption from "./components/catagoryOption.jsx"
+import CategoryOption, { OptionsCategory } from "./components/catagoryOption.jsx"
 import { useState, useEffect } from "react"
 import { CartContext } from "./components/Cart.jsx";
+
 
 async function getCategories() {
 
@@ -44,7 +45,7 @@ export default function App() {
 
                 let list = data.map((cat) => {
 
-                    return (<CategoryOption name={cat} selected={false} />)
+                    return (<CategoryOption key={OptionsCategory.getId()} name={cat} selected={false} />)
 
                 });
                 setOptions(list);
