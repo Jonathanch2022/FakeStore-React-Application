@@ -11,6 +11,7 @@ export default function CartItem(props) {
 		setQty(e.target.value);
 		props.updateQuantity(e);
 		
+		
 	}
 	const handleRemoveClick = (e) => {
 

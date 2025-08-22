@@ -4,7 +4,7 @@ import Header from "../components/Header.jsx"
 import Product from "../components/Product.jsx"
 import CartItem from "../components/CartItem.jsx"
 import Cart from "../components/Cart.jsx"
-
+import { CartContext } from "../components/CartContext.jsx";
 
 
 async function getProducts() {
@@ -91,7 +91,8 @@ export default function ProductListing() {
    
    
     const [searchParams, setSearchParams] = useSearchParams();
-    const {search, setSearch, shopCatagory, setShopCatagory, products, setProducts, cartItems, setCartItems } = useContext(productListingContext);
+    const { search, setSearch, shopCatagory, setShopCatagory, products, setProducts, cartItems, setCartItems } = useContext(productListingContext);
+    const { setCartItemCount, cartItemCount, cartTotle, setCartTotle } = useContext(CartContext);
    
 
 
@@ -105,11 +106,13 @@ export default function ProductListing() {
         setCartItems(Array.from(CartData.cartList.values()));
 
     }
+ 
     const updateQuantity = (e) => {
 
         let itemid = parseInt(e.target.getAttribute("data-itemid"));
         CartData.cartList.get(itemid).quantity = e.target.value;
         updateCartList();
+       
        
     }
     const returnCartItems = () => {
