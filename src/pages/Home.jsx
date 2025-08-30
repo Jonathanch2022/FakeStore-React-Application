@@ -2,63 +2,11 @@
 import { useNavigate} from 'react-router-dom' 
 import Button from 'react-bootstrap/Button';
 import Header from "../components/Header.jsx"
-import Cart from '../components/Cart.jsx';
+import Cart,{ getCartItems, CartData } from '../components/Cart.jsx';
 import CartItem from '../components/CartItem.jsx';
 import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-
-//Product cart requirement 
-class CartData {
-
-    constructor(id, title, price, image, description, quantity) {
-
-        this.id = id;
-        this.title = title;
-        this.price = price;
-        this.image = image;
-        this.description = description;
-        this.quantity = quantity;
-        CartData.key++;
-        CartData.cartList.set(this.id, this);
-
-    }
-
-    id = 0;
-    title = "";
-    price = 0;
-    image = ""
-    description = "";
-    quantity = 1;
-    static cartList = new Map();
-    static key = 0;
-
-    remove() {
-
-        CartData.cartList.delete(this.id);
-
-    }
-
-
-}
-function getCartItems() {
-
-    const cartobject = localStorage.getItem("cart-data");
-
-    if (cartobject != undefined && cartobject != null) {
-
-        let jsonData = JSON.parse(cartobject);
-        return (
-            jsonData.map((item) => {
-
-                return (new CartData(item.id, item.title, item.price, item.image, item.description, item.quantity));
-
-            })
-        )
-    }
-
-}
-//End of product cart requirements 
 export default function Home() {
     let place = "Home Page";
    
@@ -115,7 +63,8 @@ export default function Home() {
 
                 <Cart>
                     {
-                        returnCartItems()
+                        //returnCartItems()
+                        cartItems
                     }
                 </Cart>
             } />

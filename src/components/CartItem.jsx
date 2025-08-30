@@ -1,40 +1,19 @@
 import "../css/cart.css"
 import { useState, useContext } from "react"
-import { CartContext } from '../components/CartContext.jsx' 
-
+import { CartContext, getCartItems, CartData } from '../components/Cart' 
+import { productListingContext } from "../pages/ProductListing";
 export default function CartItem(props) {
-	const { cartItems, setCartItems } = useContext(CartContext);
+	const { updateQuantity,setCartItemCount, cartItemCount, cartTotle, setCartTotle, cartItems, setCartItems,handleRemove } = useContext(CartContext);
 	const [qty, setQty] = useState(props.quantity);
 	
 	const handleUpdateQty = (e) => {
 		
 		setQty(e.target.value);
-		props.updateQuantity(e);
+		updateQuantity(e);
 		
 		
 	}
-	const handleRemoveClick = (e) => {
-
-		
-		let itemid = e.target.getAttribute("data-itemid");
-		
-		
-		let t = [];
-		
-
-		for (let t in cartItems) {
-
-			if (cartItems[t].key !== itemid) {
-
-				t.push(cartItems[t]);
-			}
-			
-		}
-		setCartItems(t);
-		
-		
-		
-	}
+	
 	return (
 		<>
 			<div className="cartitem-container" id={"item" + props.id} data-qty={props.quantity} key={props.id} data-cart="cart">
@@ -61,7 +40,7 @@ export default function CartItem(props) {
 
 					</div>
 					<div className="remove-cartitem" data-cart="cart">
-						<button id="remove-item" data-item={"item" + props.id} data-itemid={props.id} onClick={props.remove} className="remove-item btn btn-danger" data-cart="cart">X</button>
+						<button id="remove-item" data-item={"item" + props.id} data-itemid={props.id} onClick={handleRemove} className="remove-item btn btn-danger" data-cart="cart">X</button>
 					</div>
 				</div>
 

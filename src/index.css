@@ -20,7 +20,7 @@ Nav.Link{
     color:gold;
     font-weight:bolder;
 }
-.product-box img{
+.product-box img:not(.rating-star){
 
     margin-right:auto;
     margin-top:10px;
@@ -115,19 +115,40 @@ Nav.Link{
     
     
 }
-.rating-star{
+.rating-stars-label{
+    font-size:16px;
+    font-weight:bolder;
+    margin-left:11px;
+    margin-right:5px;
+    width:auto;
 
-    width:15px;
-    height:15px;
-   
 }
-.content-devider{
-
+.rating-stars-container{
     width:100%;
-    display:inline-flex;
-    justify-content: space-between;
- 
+    display:inline-block;
+    height:auto;
+    margin-bottom: 10px;
 
+}
+.rating-container {
+    display: inline-flex;
+    width: auto;
+}
+.rating-container p {
+        padding-top: 5px;
+        display: inline-block;
+        height: 100%;
+        margin: auto 2px auto auto;
+        text-align: center;
+}
+.rating-star {
+    width: 20px;
+    height: 20px;
+}
+.content-devider:not(.rating-star) {
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
 }
 .product-details{
     width:50%;
@@ -190,27 +211,7 @@ Nav.Link{
     color:red;
     font-weight:bolder;
 }
-.content-devider img{
 
-    width:50%;
-    height: 100%;
-    padding:15px;
-}
-.rating-container{
-
-    display: inline-flex;
-    width: auto;
-   
-
-}
-.rating-container p {
-        padding-top: 5px;
-    
-        display:inline-block;
-        height: 100%;
-        margin: auto 2px auto auto;
-        text-align:center;
-}
 .product-item-box p{
 
     padding-top:1px;
@@ -256,14 +257,6 @@ Nav.Link{
 
     visibility:hidden;
 }
-@media(max-width:1200px){
-
-    .action-buttons button {
-        margin-left:90px;
-        margin-top:15px;
-        min-width:187px;
-    }
-}
 .cartIcon{
 
     width:56px;
@@ -301,23 +294,6 @@ Nav.Link{
 .alert-hidden{
     visibility:hidden;
 }
-
-@media(max-width:688px){
-
-    .action-buttons button {
-        
-        margin-left: 0px;
-        margin-top: 15px;
-        min-width: 187px;
-    }
-    .product-description {
-
-        margin-top: 55%;
-    }
-    .action-buttons input{
-        margin-top: 10px;
-    }
-}
 .categorySelection{
     width:250px;
     height:35px;
@@ -329,4 +305,31 @@ Nav.Link{
     font-weight:bolder;
     color:white;
     
+}
+#star-container {
+    margin-left: 8px !important;
+}
+@media(max-width:1200px) {
+
+    .action-buttons button {
+        margin-left: 90px;
+        margin-top: 15px;
+        min-width: 187px;
+    }
+}
+@media(max-width:688px) {
+
+    .action-buttons button {
+        margin-left: 0px;
+        margin-top: 15px;
+        min-width: 187px;
+    }
+
+    .product-description {
+        margin-top: 55%;
+    }
+
+    .action-buttons input {
+        margin-top: 10px;
+    }
 }

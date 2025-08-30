@@ -1,7 +1,32 @@
 import Button from 'react-bootstrap/Button'
 import { useNavigate } from 'react-router-dom'
+import RateStar from './RateStar';
+import Cart, { CartContext, getCartItems, CartData } from "../components/Cart.jsx"
+import { useState, useEffect, useContext, createContext, useRef } from 'react'
+
+export class ProductItem {
+    constructor(id, title, price, description, category, image) {
+        this.id = parseInt(id);
+        this.title = title;
+        this.price = parseFloat(price);
+        this.description = description;
+        this.category = category;
+        this.image = image;
 
 
+
+    }
+
+    id = 0;
+    title;
+    price = 0;
+    description;
+    category;
+    image;
+
+
+
+}
 
 export default function Product(props) {
 
@@ -9,6 +34,7 @@ export default function Product(props) {
     let value = parseInt(props.price).toFixed(2);
     const Navigate = useNavigate();
     let productID = props.productid;
+    const { handleAddToCart } = useContext(CartContext);
 
     const itemData = {
 
@@ -17,7 +43,9 @@ export default function Product(props) {
         price : props.price,
         imageSrc : props.imageSrc,
         description : props.description,
-        quantity : 1
+        quantity: 1,
+        rating: props.rating,
+        ratingCount: props.ratingCount
 
     }
    
@@ -34,8 +62,9 @@ export default function Product(props) {
                 <h5>{props.title }</h5>
                 <img src={props.imageSrc} alt="procuct image" />
                 <div className="product-price">${value}</div>
+                <RateStar rating={props.rating} ratingCount={props.ratingCount} />
                 <Button variant="primary btn-space" onClick={handleClick}> View </Button>
-                <Button variant="primary" onClick={props.addToCart} data-item={JSON.stringify(itemData)}> Add to cart </Button>
+                <Button variant="primary" onClick={handleAddToCart} data-item={JSON.stringify(itemData)}> Add to cart </Button>
             </div>
         </>
     )

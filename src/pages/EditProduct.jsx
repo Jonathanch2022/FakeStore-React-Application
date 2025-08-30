@@ -3,109 +3,15 @@ import Header from "../components/Header.jsx"
 import "../css/common.css";
 import placeholder from "../assets/placeholder.png"
 import Button from "react-bootstrap/Button"
-import { useEffect, useState} from 'react'
-import Cart from "../components/Cart.jsx"
+import { useEffect, useState, useContext } from 'react'
+import Cart, { getCartItems, CartData, CartContext } from "../components/Cart.jsx"
 import CartItem from "../components/CartItem.jsx"
-
-class CartData {
-
-    constructor(id, title, price, image, description, quantity) {
-
-        this.id = id;
-        this.title = title;
-        this.price = price;
-        this.image = image;
-        this.description = description;
-        this.quantity = quantity;
-        CartData.key++;
-        CartData.cartList.set(this.id, this);
-
-    }
-
-    id = 0;
-    title = "";
-    price = 0;
-    image = ""
-    description = "";
-    quantity = 1;
-    static cartList = new Map();
-    static key = 0;
-
-    remove() {
-
-        CartData.cartList.delete(this.id);
-
-    }
-
-
-}
-function getCartItems() {
-
-    const cartobject = localStorage.getItem("cart-data");
-
-    if (cartobject != undefined && cartobject != null) {
-
-        let jsonData = JSON.parse(cartobject);
-        return (
-            jsonData.map((item) => {
-
-                return (new CartData(item.id, item.title, item.price, item.image, item.description, item.quantity));
-
-            })
-        )
-    }
-
-}
-//End of product cart requirements 
-class ProductItem {
-    constructor(id, title, price, description, category, image) {
-        this.id = parseInt(id);
-        this.title = title;
-        this.price = parseFloat(price);
-        this.description = description;
-        this.category = category;
-        this.image = image;
-
-
-
-    }
-
-    id = 0;
-    title;
-    price = 0;
-    description;
-    category;
-    image;
-
-
-
-}
-async function getProduct(id) {
-
-    let response = await fetch("https://fakestoreapi.com/products/" + id, {
-
-        method: "get"
-
-
-    }).then((e) => {
-
-        if (e.ok) {
-
-            return (e.json());
-        }
-    }).then((b) => {
-
-        if (b) {
-
-            console.log(b);
-            return (b);
-        }
-    })
-    return (response);
-}
+import { getProduct } from "./ProductListing.jsx"
+import { ProductItem } from "../components/Product.jsx"
+import { useQuery, useMutation } from '@tanstack/react-query'
 async function deleteData(id) {
 
-    response = await fetch("https://fakestoreapi.com/products/" + id, {
+    let response = await fetch("https://fakestoreapi.com/products/" + id, {
         method: "DELETE",
     }).then((a) => {
 
@@ -124,13 +30,14 @@ async function deleteData(id) {
     
     return (response);
 }
-async function postData(data) {
 
+async function postData(datax) {
 
-    const prd = new ProductItem(data.product_id.value, data.product_name.value, data.product_price.value, data.product_description.value, data.product_category.value, data.product_image.value);
+   
+    const prd = new ProductItem(datax.product_id.value, datax.product_name.value, datax.product_price.value, datax.product_description.value, datax.product_category.value, datax.product_image.value);
     let jsonData = JSON.stringify(prd);
  
-    let response = await fetch("https://fakestoreapi.com/products/"+data.id.value, {
+    let response = await fetch("https://fakestoreapi.com/products/"+datax.id.value, {
 
         method: "put",
         headers: {
@@ -160,6 +67,16 @@ async function postData(data) {
 export default function EditProduct() {
    
     const [searchParams, setSearchParams] = useSearchParams();
+    const id = searchParams.get("productid");
+    const { mutateAsync: UpdateData } = useMutation({
+
+        mutationFn: postData
+        
+    })
+    const { mutateAsync: removeData } = useMutation({
+
+        mutationFn: deleteData
+    })
     const navigate = useNavigate();
     const [product, setProduct] = useState({
 
@@ -171,46 +88,15 @@ export default function EditProduct() {
             image: ""
 
     });
-
-    //Needed for product cart function
-    const [cartItems, setCartItems] = useState(getCartItems() || []);
-    const returnCartItems = () => {
-
-        return (
-            cartItems.map((item) => {
-
-                return (
-
-                    <CartItem key={item.id} id={item.id} image={item.image} quantity={item.quantity} price={item.price} title={item.title} updateQuantity={updateQuantity} remove={handleRemove} />                )
-            })
-        )
-    }
-    const updateQuantity = (e) => {
-
-        let itemid = parseInt(e.target.getAttribute("data-itemid"));
-        CartData.cartList.get(itemid).quantity = e.target.value;
-        updateCartList();
-
-    }
-    const updateCartList = () => {
-
-        localStorage.setItem("cart-data", JSON.stringify(Array.from(CartData.cartList.values())));
-    }
-    const handleRemove = (e) => {
-
-        let prdid = e.target.getAttribute("data-itemid");
-        CartData.cartList.delete(parseInt(prdid));
-        updateCartList();
-        setCartItems(Array.from(CartData.cartList.values()));
-
-    }
+    const { handleRemove, updateQuantity} = useContext(CartContext);
 
     //End of product cart function requirement 
-    const handSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm(e.target)) {
 
-            postData(e.target);
+            UpdateData(e.target);
+           // postData(e.target);
         }
     }
     const validateForm = (e) => {
@@ -274,7 +160,8 @@ export default function EditProduct() {
         if (id) {
 
             if(window.confirm("Are you sure you want to delete this product?")) {
-                deleteData(searchParams.get("productid"))
+ 
+                removeData(searchParams.get("productid"));
                 navigate("/product-listing");
             }
             
@@ -298,6 +185,7 @@ export default function EditProduct() {
     }
     useEffect(() => {
 
+       
         let id = searchParams.get("productid");
 
         if (id != null) {
@@ -324,14 +212,7 @@ export default function EditProduct() {
     
     return (
         <>
-            <Header cart={
-
-                <Cart>
-                    {
-                        returnCartItems()
-                    }
-                </Cart>
-            } />
+            <Header  />
             <div className="content-container">
                 <div className="editor-header">Product Editor</div>
                 <div className="editor-fields-container">
@@ -344,7 +225,7 @@ export default function EditProduct() {
 
                     <div className="editor-fields">
 
-                        <form id="product-form" onSubmit={handSubmit}>
+                        <form id="product-form" onSubmit={handleSubmit}>
                             <label>Product Name:</label>
                             <input type="text" id="product_name" name="title" value={product.title} onChange={handleChange} placeholder="Enter Product Name" />
                             <div id="alert-product-name" className="alert-hidden">Product name must not be blank</div>

@@ -2,91 +2,17 @@ import {useSearchParams } from 'react-router-dom'
 import Header from "../components/Header.jsx"
 import "../css/common.css";
 import Button from "react-bootstrap/Button"
-import Cart from "../components/Cart.jsx"
+import Cart, { getCartItems, CartData, CartContext } from "../components/Cart.jsx"
 import CartItem from "../components/CartItem.jsx"
-import {useState } from 'react' 
+import { useState, useContext } from 'react'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import {ProductItem} from "../components/Product.jsx" 
 
-
-class CartData {
-
-    constructor(id, title, price, image, description, quantity) {
-
-        this.id = id;
-        this.title = title;
-        this.price = price;
-        this.image = image;
-        this.description = description;
-        this.quantity = quantity;
-        CartData.key++;
-        CartData.cartList.set(this.id, this);
-
-    }
-
-    id = 0;
-    title = "";
-    price = 0;
-    image = ""
-    description = "";
-    quantity = 1;
-    static cartList = new Map();
-    static key = 0;
-
-    remove() {
-
-        CartData.cartList.delete(this.id);
-
-    }
-
-
-}
-function getCartItems() {
-
-    const cartobject = localStorage.getItem("cart-data");
-
-    if (cartobject != undefined && cartobject != null) {
-
-        let jsonData = JSON.parse(cartobject);
-        return (
-            jsonData.map((item) => {
-
-                return (new CartData(item.id, item.title, item.price, item.image, item.description, item.quantity));
-
-            })
-        )
-    }
-
-}
-//End of product cart requirements 
-
-class ProductItem {
-    constructor(id, title, price, description, category, image) {
-        this.id = parseInt(id);
-        this.title = title;
-        this.price = parseFloat(price);
-        this.description = description;
-        this.category = category;
-        this.image = image;
-       
-       
-       
-    }
-    
-    id = 0;
-    title;
-    price = 0;
-    description;
-    category;
-    image;
-    
-   
-    
-}
 async function postData(data) {
 
     
     const prd = new ProductItem(data.product_name.value, data.product_id.value, data.product_image.value, data.product_price.value, data.product_category.value, data.product_description.value);
     let jsonData = JSON.stringify(prd);
- 
     let response = await fetch("https://fakestoreapi.com/products", {
 
         method: "post",
@@ -172,51 +98,21 @@ const validateForm = (e) => {
 export default function AddProduct() {
     let place = "Create Product Page";
     const [searchParams, setSearchParams] = useSearchParams();
-
-
-
+    const {mutateAsync:AddPost } = useMutation({
+        mutationFn: postData
+       
+    })
     //Needed for product cart function
     const [cartItems, setCartItems] = useState(getCartItems() || []);
-    const returnCartItems = () => {
-
-        return (
-            cartItems.map((item) => {
-
-                return (
-
-                    <CartItem key={item.id} id={item.id} image={item.image} quantity={item.quantity} price={item.price} title={item.title} updateQuantity={updateQuantity} remove={handleRemove} />                )
-            })
-        )
-    }
-    const updateCartList = () => {
-
-        localStorage.setItem("cart-data", JSON.stringify(Array.from(CartData.cartList.values())));
-    }
-    const updateQuantity = (e) => {
-
-        let itemid = parseInt(e.target.getAttribute("data-itemid"));
-        CartData.cartList.get(itemid).quantity = e.target.value;
-        updateCartList();
-
-    }
-    const handleRemove = (e) => {
-
-        let prdid = e.target.getAttribute("data-itemid");
-        CartData.cartList.delete(parseInt(prdid));
-        updateCartList();
-        setCartItems(Array.from(CartData.cartList.values()));
-
-    }
-
-    //End of product cart function requirement 
-
-
+    const { updateQuantity, handleRemove, returnCartItems, updateCartList } = useContext(CartContext);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm(e.target)) {
 
-            postData(e.target);
+            AddPost(e.target);
+         
+            
         }
         
     }

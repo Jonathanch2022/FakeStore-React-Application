@@ -6,6 +6,7 @@ import { createContext, useContext } from "react"
 import CatagoryOption from "../components/catagoryOption"
 import {productListingContext} from "../pages/ProductListing" 
 import { useEffect } from 'react'
+import Cart, { getCartItems, CartData } from "../components/Cart"
 export default function Header(props) {
 
     const navigate = useNavigate();
@@ -87,7 +88,8 @@ export default function Header(props) {
                             <label htmlFor="search-input" className="input-group-text">Search</label>
                             <input type="text" className="form-control" id="search-input" placeholder="Search for products..." />
                                 <Button type="submit" variant="primary" id="search-button">Search</Button>
-                                <div id="cartIcon" className="cartIcon" src={cartIcon} onClick={handleCartClick} alt="cart icon" data-cart="cart"/>
+                                <div id="cartIcon" className="cartIcon" src={cartIcon} onClick={handleCartClick} alt="cart icon" data-cart="cart" />
+                                    <Cart />
                             </div>
                         </form>
                     
@@ -103,8 +105,6 @@ export default function Header(props) {
                                 <Nav.Link href="/">Home</Nav.Link>
                                 <Nav.Link href="/product-listing">Shop</Nav.Link>
                                 <Nav.Link href="/add-product">Add Product</Nav.Link>
-                             
-                           
                             </Nav>
                         </Navbar.Collapse>
                         <label id="catagoryLabel">Category:   
@@ -119,9 +119,7 @@ export default function Header(props) {
                 </Navbar>
             </header>
             
-            {
-                props.cart
-            }
+          
            
       </>
     )
