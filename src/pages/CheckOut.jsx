@@ -12,11 +12,11 @@ import sucessCheckout from "../assets/sucessCheckout.png"
 
 export default function CheckOut() {
 
-    const { cartItems, setCartItems, setCartItemCount, cartItemCount, cartTotle, setCartTotle } = useContext(CartContext);
+    const { cartItems, setCartItems, setCartItemCount, cartItemCount, cartTotle, setCartTotle, handleLoadCart, updateCartList } = useContext(CartContext);
     const [showAlet, setShowAlert] = useState([]);
     useEffect(() => {
 
-
+        handleLoadCart();
         //let list = [];
        // list.push(<CartItem key={0} id={0} image={placeholder} title={"Placeholder Item"} price={10} quantity={2} />);
        // setCartItems(list);
@@ -112,7 +112,10 @@ export default function CheckOut() {
         if (validateForm(e.target)) {
             setShowAlert(AlertBox.showAlert(false, "Purchase Complete!", "Thank you, Your order has been successfully submitted!", "Order Complete", sucessCheckout));
             let orderData = order.createOrder(e.target);
+            setCartItems([]);
+            updateCartList();
             console.log(orderData);
+            console.log(order.orderHistory);
         }
        
     }

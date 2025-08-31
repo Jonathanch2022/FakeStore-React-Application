@@ -66,7 +66,14 @@ export default function App() {
 
     const updateCartList = () => {
 
+        console.log(cartItems);
+
         localStorage.setItem("cart-data", JSON.stringify(Array.from(cartItems)));
+    }
+    const handleLoadCart= () => {
+
+        let cartData = localStorage.getItem('cart-data');
+        console.log(cartData);
     }
     const updateCartItem = (id,quantity) => {
        
@@ -136,7 +143,7 @@ export default function App() {
     }
     return (
 
-        <CartContext.Provider value={{ updateQuantity, setCartItemCount, cartItemCount, cartTotle, setCartTotle, cartItems, setCartItems, updateCartList, handleAddToCart, handleRemove, returnCartItems, updateCartItem }}>
+        <CartContext.Provider value={{ updateQuantity, setCartItemCount, cartItemCount, cartTotle, setCartTotle, cartItems, setCartItems, updateCartList, handleAddToCart, handleRemove, returnCartItems, updateCartItem, handleLoadCart }}>
         <productListingContext.Provider value={{ search, setSearch, shopCatagory, setShopCatagory, products, setProducts}}>
         <HeaderContext.Provider value={{ options,setOptions }}>
                 <Router>
