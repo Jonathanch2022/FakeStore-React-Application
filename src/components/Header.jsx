@@ -6,7 +6,7 @@ import { createContext, useContext } from "react"
 import CatagoryOption from "../components/catagoryOption"
 import {productListingContext} from "../pages/ProductListing" 
 import { useEffect } from 'react'
-import Cart, { getCartItems, CartData } from "../components/Cart"
+import Cart, { getCartItems, CartData, handleCartClick } from "../components/Cart"
 export default function Header(props) {
 
     const navigate = useNavigate();
@@ -22,47 +22,9 @@ export default function Header(props) {
         navigate("/product-listing?search=" + encodeURIComponent(searchValue));
        
     }
-    const handleCartClick = () => {
-
-        const cartElement = document.getElementById("cart-container");
-        if (cartElement) {
-
-            if (cartElement.className.includes("cart-container-hidden")) {
-
-                cartElement.focus();
-                cartElement.className = "cart-container cart-container-show";
-            }
-            else {
-
-                cartElement.className = "cart-container cart-container-hidden";
-                if (cartElement.style.height) {
-                    
-                    cartElement.style.visibility = "hidden";
-                }
-            }
-        }
-    }
-    const handleCollapseCart = (e) => {
-
-        if (e.target.getAttribute("data-cart") == undefined) {
-
-            const cartElement = document.getElementById("cart-container");
-
-            if (!cartElement.className.includes("cart-container-hidden")) {
-
-
-                cartElement.className = "cart-container cart-container-hidden";
-            }
-        }
-
-    }
-    document.addEventListener("click", (e) => { 
-
-
-        document.addEventListener("mousedown", handleCollapseCart);
-
-    });
-
+   
+  
+    
     let handleCategoryChange = (e) => {
         
         let selectedValue = e.target.value;

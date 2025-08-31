@@ -67,13 +67,29 @@ export default function App() {
 
         localStorage.setItem("cart-data", JSON.stringify(Array.from(cartItems)));
     }
+    const updateCartItem = (id,quantity) => {
+       
+      let newCartList =  cartItems.map((item) => {
+
+            if (item.props.id == id) {
+
+                return (<CartItem key={item.props.id} id={item.props.id} title={item.props.title} quantity={quantity} price={item.props.price} image={item.props.image} />)
+            }
+            else {
+
+                return (<CartItem key={item.props.id} id={item.props.id} title={item.props.title} quantity={item.props.quantity} price={item.props.price} image={item.props.image} />)
+            }
+      })
+        setCartItems(newCartList);
+        return (newCartList);
+       
+    }
     const handleAddToCart = (e) => {
 
 
         let qty = e.target.getAttribute("data-qty");
         let itemData = JSON.parse(e.target.getAttribute("data-item"));
-        console.log(itemData);
-        console.log(CartData.cartList);
+     
          if(!CartData.cartList.get(itemData.id)) {
 
              let item = new CartData(itemData.id, itemData.title, itemData.price, (itemData.imageSrc) ? itemData.imageSrc : itemData.image, itemData.description, (qty != null) ? qty : itemData.quantity);
@@ -119,7 +135,7 @@ export default function App() {
     }
     return (
 
-        <CartContext.Provider value={{ updateQuantity,setCartItemCount, cartItemCount, cartTotle, setCartTotle, cartItems, setCartItems, updateCartList, handleAddToCart, handleRemove, returnCartItems }}>
+        <CartContext.Provider value={{ updateQuantity, setCartItemCount, cartItemCount, cartTotle, setCartTotle, cartItems, setCartItems, updateCartList, handleAddToCart, handleRemove, returnCartItems, updateCartItem }}>
         <productListingContext.Provider value={{ search, setSearch, shopCatagory, setShopCatagory, products, setProducts}}>
         <HeaderContext.Provider value={{ options,setOptions }}>
                 <Router>

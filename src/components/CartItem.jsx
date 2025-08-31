@@ -1,22 +1,50 @@
 import "../css/cart.css"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { CartContext, getCartItems, CartData } from '../components/Cart' 
 import { productListingContext } from "../pages/ProductListing";
-export default function CartItem(props) {
-	const { updateQuantity,setCartItemCount, cartItemCount, cartTotle, setCartTotle, cartItems, setCartItems,handleRemove } = useContext(CartContext);
-	const [qty, setQty] = useState(props.quantity);
+
+export function updateCartData(cartList) {
+	let cartTotal = 0;
+	let cartQty = 0;
+	for (let t in cartList) {
+
+		cartTotal += parseInt(cartList[t].props.price) * parseInt(cartList[t].props.quantity);
+		cartQty += parseInt(cartList[t].props.quantity);
+		
+		
+	}
 	
+	return ([cartTotal, cartQty]);
+}
+export default function CartItem(props) {
+	const {updateQuantity,setCartItemCount, cartItemCount, cartTotle, setCartTotle, cartItems, setCartItems,handleRemove,updateCartItem } = useContext(CartContext);
+	const [qty, setQty] = useState(props.quantity);
+	const [total, setTotal] = useState(0);
+	let qtybox = document.getElementById("qty" + props.id);
 	const handleUpdateQty = (e) => {
 		
-		setQty(e.target.value);
+
+		//updateCartList();
+		let newvalue = document.getElementById("qty" + props.id).value;
+		updateCartItem(props.id, newvalue);
 		updateQuantity(e);
 		
 		
 	}
 	
+	useEffect(() => {
+
+		if (CartItem.length > 0) {
+			let values = updateCartData(cartItems);
+
+			setCartTotle(values[0]);
+			setCartItemCount(values[1]);
+		}
+
+	}, [qty, cartItems])
 	return (
 		<>
-			<div className="cartitem-container" id={"item" + props.id} data-qty={props.quantity} key={props.id} data-cart="cart">
+			<div className="cartitem-container" id={"item" + props.id} data-qty={props.quantity} key={props.id} data-cart="cart" data-total={total}>
 				<div className="cartitem-image" data-cart="cart">
 					<img src={props.image} alt="cart item image" data-cart="cart" />
 				</div>
@@ -35,7 +63,7 @@ export default function CartItem(props) {
 						</p>
 						<div className="input-group mb-2" data-cart="cart">
 							<label className="input-group-text" htmlFor="quantity" data-cart="cart">Quantity</label>
-							<input type="number" className="form-control" id={"qty" + props.id} data-itemid={props.id } onBlur={handleUpdateQty} defaultValue={props.quantity} data-cart="cart" />
+							<input type="number" className="form-control" id={"qty" + props.id} data-itemid={props.id} onBlur={(e) => { handleUpdateQty(e), setQty(e.target.value) }} defaultValue={props.quantity} data-cart="cart" data-total={total} />
 						</div>
 
 					</div>
