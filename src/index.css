@@ -309,6 +309,17 @@ Nav.Link{
 #star-container {
     margin-left: 8px !important;
 }
+.title-header{
+
+    height:50px;
+    width:100%;
+    text-align:center;
+    padding-top: 5px;
+    font-weight:bolder;
+    font-size:25px;
+    background-color:gold;
+    color:white;
+}
 @media(max-width:1200px) {
 
     .action-buttons button {

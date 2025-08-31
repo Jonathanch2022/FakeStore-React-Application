@@ -1,7 +1,7 @@
 import { useState, useEffect,createContext,useContext } from "react"
 import "../css/cart.css"
 import CartItem from "./CartItem";
-
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom"
 export class CartData {
 
     constructor(id, title, price, image, description, quantity) {
@@ -69,10 +69,7 @@ const handleCollapseCart = (e) => {
     }
 
 }
-const handleCheckOut = (e) => {
 
-
-}
    document.addEventListener("click", (e) => { 
 
        document.getElementById("root").addEventListener("mouseover", (e) => {
@@ -109,9 +106,14 @@ export function getCartItems() {
 
 export default function Cart(props) {
 
-    const { setCartItemCount, cartItemCount, cartTotle, setCartTotle, cartItems, setCartItems,updateCartList } = useContext(CartContext);
+    const { setCartItemCount, cartItemCount, cartTotle, setCartTotle, cartItems, setCartItems, updateCartList } = useContext(CartContext);
+    const navigate = useNavigate();
 
- 
+    const handleCheckout = (e) => {
+
+        navigate("/checkout");
+    }
+
     return (
         <>
 
@@ -121,15 +123,13 @@ export default function Cart(props) {
                     {
                         cartItems
                     }
-
-
                 </div>
                 <div className="cartid1" data-cart="cart">
                     <div className="cart-total" data-cart="cart">
                         <label id="totle" data-cart="cart">Total: ${cartTotle}</label>
                         <label id="items" data-cart="cart">Items: {cartItemCount}</label>
                     </div>
-                    <button type="button" data-cart="cart" onClick={handleCheckOut} >Check Out</button>
+                    <button type="button" data-cart="cart" onClick={handleCheckout} >Check Out</button>
                 </div>
 
             </div>

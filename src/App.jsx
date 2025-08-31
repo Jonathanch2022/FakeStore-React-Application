@@ -11,6 +11,7 @@ import { useState, useEffect } from "react"
 import Cart, { CartContext, getCartItems, CartData } from "./components/Cart.jsx";
 import {useQuery} from "@tanstack/react-query"
 import CartItem from './components/CartItem'
+import CheckOut from './pages/CheckOut.jsx'
 
 
 
@@ -146,6 +147,7 @@ export default function App() {
                         <Route path="/edit-product" element={<EditProduct />} />
                         <Route path="/view-product" element={<ViewProduct />} />
                         <Route path="/product-listing" element={<ProductListing />} />
+                        <Route path="/checkout" element={<CheckOut/> } />
 
                     </Routes>
 

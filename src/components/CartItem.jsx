@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from "react"
 import { CartContext, getCartItems, CartData } from '../components/Cart' 
 import { productListingContext } from "../pages/ProductListing";
 
-export function updateCartData(cartList) {
+export function updateCartTotals(cartList) {
 	let cartTotal = 0;
 	let cartQty = 0;
 	for (let t in cartList) {
@@ -23,19 +23,16 @@ export default function CartItem(props) {
 	let qtybox = document.getElementById("qty" + props.id);
 	const handleUpdateQty = (e) => {
 		
-
-		//updateCartList();
 		let newvalue = document.getElementById("qty" + props.id).value;
 		updateCartItem(props.id, newvalue);
 		updateQuantity(e);
-		
 		
 	}
 	
 	useEffect(() => {
 
 		if (CartItem.length > 0) {
-			let values = updateCartData(cartItems);
+			let values = updateCartTotals(cartItems);
 
 			setCartTotle(values[0]);
 			setCartItemCount(values[1]);
