@@ -6,23 +6,24 @@ export class order {
     static instanceid = 0;
     constructor() {
 
-        order.orderList.push(this);
+        
         order.instanceid++;
         this.id = order.instanceid;
     }
     id;
     name;
     address;
-    billingaddress;
-    paymentMethod;
     cardtype;
-    shipping;
     orderdate;
     cardcvv;
     cardexpiration;
     cardnumber;
-
-    cart = [];
+    city;
+    state;
+    zipcode;
+    phonenumber;
+    email;
+    cart;
     total = 0;
     items = 0;
 
@@ -37,10 +38,7 @@ export class order {
                 let ord = new order();
                 ord.name = orderData.name;
                 ord.address = orderData.address;
-                ord.billingaddress = orderData.billingaddress;
-                ord.paymentMethod = orderData.paymentMethod;
                 ord.cardtype = orderData.cardtype;
-                ord.shipping = orderData.shipping;
                 ord.orderdate = orderData.orderdate;
                 ord.cart = orderData.cart;
                 ord.total = orderData.total;
@@ -48,6 +46,14 @@ export class order {
                 ord.cardcvv = orderData.cardcvv;
                 ord.cardexpiration = orderData.cardexpiration;
                 ord.cardnumber = orderData.cardnumber;
+                ord.id = orderData.id;
+                ord.city = orderData.city;
+                ord.state = orderData.state;
+                ord.zipcode = orderData.zipcode;
+                ord.phonenumber = orderData.phonenumber;
+                ord.email = orderData.email;
+
+
 
                 return (ord);
             })
@@ -58,22 +64,24 @@ export class order {
 
 
         let newOrder = new order();
-
-        newOrder.name = data.name;
-        newOrder.address = data.address;
-        newOrder.billingaddress = data.billingaddress;
-        newOrder.paymentMethod = data.paymentMethod;
-        newOrder.cardtype = data.cardtype;
-        newOrder.shipping = data.shipping;
+        console.log(data);
+        newOrder.name = data.firstName.value + " " + data.lastName.value;
+        newOrder.address = data.address.value;
+        newOrder.cardtype = data.paymentMethod.value;
         newOrder.orderdate = new Date().toLocaleDateString();
-        newOrder.cart = data.cart;
-        newOrder.total = data.total;
-        newOrder.items = data.items;
-        newOrder.cardcvv = data.cardcvv;
-        newOrder.cardexpiration = data.cardexpiration;
-        newOrder.cardnumber = data.cardnumber;
+        newOrder.cart = data.cart.value;
+        newOrder.total = data.total.value;
+        newOrder.items = data.items.value;
+        newOrder.cardcvv = data.cvv.value;
+        newOrder.cardexpiration = data.expirationDate.value;
+        newOrder.cardnumber = data.cardNumber.value;
+        newOrder.city = data.city.value;
+        newOrder.state = data.state.value;
+        newOrder.zipcode = data.zip.value;
+        newOrder.phonenumber = data.phone.value;
+        newOrder.email = data.email.value;
         order.orderHistory.push(newOrder);
-        localStorage.setItem("order-history", JSON.stringify(order.orderHistory));
+
         return (newOrder);
     
     }

@@ -12,8 +12,15 @@ import sucessCheckout from "../assets/sucessCheckout.png"
 
 export default function CheckOut() {
 
-    const { cartItems, setCartItems } = useContext(CartContext);
+    const { cartItems, setCartItems, setCartItemCount, cartItemCount, cartTotle, setCartTotle } = useContext(CartContext);
     const [showAlet, setShowAlert] = useState([]);
+    useEffect(() => {
+
+
+        //let list = [];
+       // list.push(<CartItem key={0} id={0} image={placeholder} title={"Placeholder Item"} price={10} quantity={2} />);
+       // setCartItems(list);
+    },[])
     const validateForm = (e) => {
 
         let valid = true;
@@ -104,10 +111,12 @@ export default function CheckOut() {
 
         if (validateForm(e.target)) {
             setShowAlert(AlertBox.showAlert(false, "Purchase Complete!", "Thank you, Your order has been successfully submitted!", "Order Complete", sucessCheckout));
+            let orderData = order.createOrder(e.target);
+            console.log(orderData);
         }
        
     }
-
+    
     return (
         <>
             <Header />
@@ -143,7 +152,12 @@ export default function CheckOut() {
                             <input id="cardNumber" type="text" placeholder="Card Number"></input>
                             <input id="expirationDate" type="text" placeholder="Expiry Date (MM/YY)"></input>
                             <input id="cvv" type="text" placeholder="CVV"></input>
-                        </div>               
+                    </div>
+                    <input type="hidden" id="cart" value={JSON.stringify(cartItems)}></input>
+                    <input type="hidden" id="items" value={cartItemCount}></input>
+                    <input type="hidden" id="total" value={cartTotle}></input>
+
+
 
                 </div>
                 <div className="cartitem-container2">
