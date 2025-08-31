@@ -9,23 +9,12 @@ import CartItem from "../components/CartItem.jsx"
 import { getProduct } from "./ProductListing.jsx"
 import { ProductItem } from "../components/Product.jsx"
 import { useQuery, useMutation } from '@tanstack/react-query'
+import Success from "../assets/SuccessfulCheckmark.png"
+import { AlertBox } from "../components/Alert.jsx"
 async function deleteData(id) {
 
     let response = await fetch("https://fakestoreapi.com/products/" + id, {
         method: "DELETE",
-    }).then((a) => {
-
-        if (a.status == 200) {
-
-            alert("Product Deleted Successfully!");
-            
-            return(a)
-        }
-        else {
-
-            alert("Error: Product could not be deleted!"); 
-            
-        }
     })
     
     return (response);
@@ -49,19 +38,8 @@ async function postData(datax) {
 
 
 
-    }).then((e) => {
-
-        if (e.status == 200) {
-
-            alert("Product Updated Successfully!");
-            return ("Product Updated Successfully");
-        }
-        else {
-
-            alert("Error: Product could not be updated!")
-            return ("Error Product could not be updated!");
-        }
     })
+    
     return (response);
 }
 export default function EditProduct() {
@@ -89,13 +67,26 @@ export default function EditProduct() {
 
     });
     const { handleRemove, updateQuantity} = useContext(CartContext);
-
+    const [Alert, setAlert] = useState([]);
     //End of product cart function requirement 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm(e.target)) {
 
-            UpdateData(e.target);
+            UpdateData(e.target).then(a => {
+
+                if (a.status == 200) {
+
+                    setAlert(AlertBox.showAlert(false, "Product Updated", "Item updated successfully", "Product Updated", Success));
+                    //navigate("/product-listing");
+
+                }
+                else {
+
+                    setAlert(AlertBox.showAlert(false, "Update Error", "Product could not be updated", "Error updating product"));
+
+                }
+            })
            // postData(e.target);
         }
     }
@@ -161,8 +152,20 @@ export default function EditProduct() {
 
             if(window.confirm("Are you sure you want to delete this product?")) {
  
-                removeData(searchParams.get("productid"));
-                navigate("/product-listing");
+                removeData(searchParams.get("productid")).then(a => {
+
+                    if (a.status == 200) {
+
+                        setAlert(AlertBox.showAlert(false, "Product Has Been Deleted", "Item deleted successfully", "Product Deleted", Success));
+                        //navigate("/product-listing");
+                    }
+                    else {
+
+                        setAlert(AlertBox.showAlert(false, "Delete Error", "Product could not be deleted", "Error deleting product"));
+                    }
+                })
+               
+                
             }
             
             
@@ -212,7 +215,10 @@ export default function EditProduct() {
     
     return (
         <>
-            <Header  />
+            <Header />
+            {
+                Alert
+            }
             <div className="content-container">
                 <div className="editor-header">Product Editor</div>
                 <div className="editor-fields-container">

@@ -1,14 +1,18 @@
 .checkout-container2{
 
     height: 85px;
-    background-color:aqua;
+    background-color:black;
     width:80%;
     margin:auto;
+    text-align:center;
+    font-size:32px;
+    font-weight:bolder;
+    color:white;
+    padding-top:20px;
 }
 .cart-data2 {
     height: auto;
     width: auto;
-    background-color: yellow;
     margin: 10px auto auto auto;
 }
 .cartitem-container2{
@@ -26,6 +30,7 @@
     background-color:black;
     color:white;
     margin-top:5px;
+    margin-bottom:150px;
 }
 #checkout-button:hover{
     background-color:gold;
@@ -36,16 +41,33 @@
     margin:auto;
     margin-top:10px;
     height:auto;
-    background-color:green;
 
 
 }
 .cartBody2 div{
 
-    height:150px;
+    height:auto;
     width:100%;
     margin-top: 5px;
     margin-bottom:5px;
-    background-color:black;
+    padding-bottom:5px;
+    
+    
     
 }
+.cartBody2 div input{
+
+    display:block;
+    width:90%;
+    height:45px;
+    margin:5px auto 1px auto ;
+    padding-right:10px;
+}
+.cartSelect {
+
+        display: block;
+        width: 90%;
+        height: 45px;
+        margin: 5px auto 1px auto;
+        padding-right: 10px;
+ }

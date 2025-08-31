@@ -1,0 +1,58 @@
+.alert-Box {
+    width: 650px;
+    height: auto;
+    border-radius: 5px;
+    border-width: 2px;
+    border-style: solid;
+    display: block;
+    position: fixed;
+    background-color: black;
+    color: white;
+    top: 15%;
+    left: 25%;
+    right:25%;
+    z-index: 10000;
+}
+.close-alert{
+
+    width:95%;
+    height:65px;
+    background-color:darkgray;
+    color:white;
+    font-size:18px;
+    font-weight:bolder;
+    margin-bottom:15px;
+}
+.close-alert:hover{
+    background-color:red;
+    color:gold;
+    
+
+}
+#message-top, #message-bottom{
+
+    font-size:18px;
+    font-weight:bolder;
+    text-align:center;
+    margin-top:50px;
+    margin-bottom:25px;
+}
+#message-bottom {
+    font-size: 18px;
+    font-weight: bolder;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+.alertImage{
+    width:30%;
+    height:35%;
+    
+}
+.alert-hidden{
+    display:none;
+}
+.alert-show{
+
+    display:block;
+}

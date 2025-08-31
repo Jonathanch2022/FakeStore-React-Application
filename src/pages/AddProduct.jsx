@@ -7,7 +7,8 @@ import CartItem from "../components/CartItem.jsx"
 import { useState, useContext } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import {ProductItem} from "../components/Product.jsx" 
-
+import Success from "../assets/SuccessfulCheckmark.png"
+import { AlertBox } from "../components/Alert.jsx"
 async function postData(data) {
 
     
@@ -25,19 +26,8 @@ async function postData(data) {
         
 
 
-    }).then((e) => {
-
-        if (e.status == 200) {
-
-            alert("Product Created Successfully!");
-            return ("Post Successful Product Created");
-        }
-        else {
-
-            alert("Error: Product could not be created!")
-            return ("Error Product could not be created!");
-        }
     })
+    return (response);
 
 }
 const validateForm = (e) => {
@@ -105,12 +95,23 @@ export default function AddProduct() {
     //Needed for product cart function
     const [cartItems, setCartItems] = useState(getCartItems() || []);
     const { updateQuantity, handleRemove, returnCartItems, updateCartList } = useContext(CartContext);
-
+    const [Alert, setAlert] = useState([]); 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm(e.target)) {
 
-            AddPost(e.target);
+            AddPost(e.target).then((a) => {
+
+                if (a.status == 200) {
+
+                    setAlert(AlertBox.showAlert(false, "Product Created", "Product Created Successfully", "Product Created", Success));
+                }
+                else {
+
+                    setAlert(AlertBox.showAlert(false, "Unsuccessful product creation", "Product coult not be created at this time", "Error Creating Product"));
+                }
+
+            });
          
             
         }
@@ -126,14 +127,10 @@ export default function AddProduct() {
     }
     return (
         <>
-            <Header cart={
-
-                <Cart>
-                    {
-                        returnCartItems()
-                    }
-                </Cart>
-            } />
+            <Header />
+            {
+                Alert
+            }
             <div className="content-container">
                 <div className="editor-header">Create Product </div>
                 <div className="editor-fields-container">
