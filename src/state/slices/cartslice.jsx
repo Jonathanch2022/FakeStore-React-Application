@@ -43,8 +43,8 @@ export const counterSlice = createSlice({
                    
                 }
                 else {
-                   
-                    state.cartList.map((item) => {
+
+                    state.cartList =  state.cartList.map((item) => {
 
                         if (item.id == action.payload.item.id) {
 
@@ -58,10 +58,12 @@ export const counterSlice = createSlice({
                                 item.quantity += parseInt(action.payload.qty);
                                
                             }
-                            return (item);
+                           
                             
                         }
+                        return (item);
                     })
+                   
                 }
               
             
@@ -84,14 +86,9 @@ export const counterSlice = createSlice({
             }
         },
         removeItem: (state, action) => {
-
             state.cartList = state.cartList.filter((item) => {
-               
-                item.id == action.payload;
+                return parseInt(item.id) !== parseInt(action.payload);
             });
-          
-           
-
         },
         loadCart: (state, action) => {
 
@@ -108,7 +105,7 @@ export const counterSlice = createSlice({
 
                 if (items.id == action.payload.id) {
 
-                    items.quantity = action.payload.quantity;
+                    items.quantity = parseInt(action.payload.qty);
                     return (items);
                 }
              })

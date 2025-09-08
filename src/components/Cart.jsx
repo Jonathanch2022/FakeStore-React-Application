@@ -42,7 +42,7 @@ const handleCollapseCart = (e) => {
 
 export default function Cart(props) {
 
-    const { updateCart } = useContext(CartContext);
+    const { updateCart,handleAddToCart } = useContext(CartContext);
     const navigate = useNavigate();
     const cartList = useSelector((state) => state.cartData.cartList);
     const total = useSelector((state) => state.cartData.total);
@@ -81,7 +81,7 @@ export default function Cart(props) {
 
         const values = tallyCart(cartList);
         dispatch(updateCartStatus(values));
-      
+
     }, [cartList])
    
     return (

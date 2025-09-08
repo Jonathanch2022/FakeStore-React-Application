@@ -12,7 +12,7 @@ import { CartContext} from "./components/Cart.jsx";
 import {useQuery} from "@tanstack/react-query"
 import CartItem from './components/CartItem'
 import CheckOut from './pages/CheckOut.jsx'
-import {updateItem,loadCart,removeItem,addToCart, setCart } from "./state/slices/cartslice"
+import {updateItem,loadCart,removeItem,addToCart, setCart, updateCartStatus } from "./state/slices/cartslice"
 import { useSelector, useDispatch } from 'react-redux'
 
 
@@ -119,6 +119,7 @@ export default function App() {
             qty: qty
         };
         dispatch(addToCart(payload));
+        
        
                 
              

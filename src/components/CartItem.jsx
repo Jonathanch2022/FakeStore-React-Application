@@ -2,16 +2,25 @@ import "../css/cart.css"
 import { useState, useContext, useEffect } from "react"
 import { CartContext} from '../components/Cart' 
 import { productListingContext } from "../pages/ProductListing";
+import { updateItem, loadCart, removeItem, addToCart, setCart } from "../state/slices/cartslice"
+import { useSelector, useDispatch } from 'react-redux'
 
 export default function CartItem(props) {
 	const {handleRemove,updateCartItem } = useContext(CartContext);
 	const [qty, setQty] = useState(props.quantity);
 	const [total, setTotal] = useState(0);
-
+	const dispatch = useDispatch();
 	const handleUpdateQty = (e) => {
 
 		console.log(props.id);
 		let newvalue = document.getElementById("qty" + props.id).value;
+		const payload = {
+			id: props.id,
+			qty: newvalue
+		}
+		dispatch(updateItem(payload));
+
+		console.log(payload);
 	
 	
 		
