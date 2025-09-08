@@ -2,8 +2,7 @@ import {useSearchParams } from 'react-router-dom'
 import Header from "../components/Header.jsx"
 import "../css/common.css";
 import Button from "react-bootstrap/Button"
-import Cart, { getCartItems, CartData, CartContext } from "../components/Cart.jsx"
-import CartItem from "../components/CartItem.jsx"
+import { CartContext } from "../components/Cart.jsx"
 import { useState, useContext } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import {ProductItem} from "../components/Product.jsx" 

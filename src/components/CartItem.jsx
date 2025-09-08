@@ -1,44 +1,22 @@
 import "../css/cart.css"
 import { useState, useContext, useEffect } from "react"
-import { CartContext, getCartItems, CartData } from '../components/Cart' 
+import { CartContext} from '../components/Cart' 
 import { productListingContext } from "../pages/ProductListing";
 
-export function updateCartTotals(cartList) {
-	let cartTotal = 0;
-	let cartQty = 0;
-	for (let t in cartList) {
-
-		cartTotal += parseInt(cartList[t].props.price) * parseInt(cartList[t].props.quantity);
-		cartQty += parseInt(cartList[t].props.quantity);
-		
-		
-	}
-	
-	return ([cartTotal, cartQty]);
-}
 export default function CartItem(props) {
-	const {updateQuantity,setCartItemCount, cartItemCount, cartTotle, setCartTotle, cartItems, setCartItems,handleRemove,updateCartItem } = useContext(CartContext);
+	const {handleRemove,updateCartItem } = useContext(CartContext);
 	const [qty, setQty] = useState(props.quantity);
 	const [total, setTotal] = useState(0);
-	let qtybox = document.getElementById("qty" + props.id);
+
 	const handleUpdateQty = (e) => {
-		
+
+		console.log(props.id);
 		let newvalue = document.getElementById("qty" + props.id).value;
-		updateCartItem(props.id, newvalue);
-		updateQuantity(e);
+	
+	
 		
 	}
 	
-	useEffect(() => {
-
-		if (CartItem.length > 0) {
-			let values = updateCartTotals(cartItems);
-
-			setCartTotle(values[0]);
-			setCartItemCount(values[1]);
-		}
-
-	}, [qty, cartItems])
 	return (
 		<>
 			<div className="cartitem-container" id={"item" + props.id} data-qty={props.quantity} key={props.id} data-cart="cart" data-total={total}>

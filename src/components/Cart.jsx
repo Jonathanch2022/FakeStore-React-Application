@@ -1,39 +1,9 @@
-import { useState, useEffect,createContext,useContext } from "react"
+import {createContext,useContext,useEffect } from "react"
 import "../css/cart.css"
-import CartItem from "./CartItem";
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom"
-export class CartData {
+import { useNavigate } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux";
+import { loadCart, setCart, updateCartStatus, tallyCart } from "../state/slices/cartslice"
 
-    constructor(id, title, price, image, description, quantity) {
-
-        this.id = id;
-        this.title = title;
-        this.price = price;
-        this.image = image;
-        this.description = description;
-        this.quantity = quantity;
-        CartData.key++;
-        CartData.cartList.set(this.id, this);
-
-    }
-
-    id = 0;
-    title = "";
-    price = 0;
-    image = ""
-    description = "";
-    quantity = 1;
-    static cartList = new Map();
-    static key = 0;
-
-    remove() {
-
-        CartData.cartList.delete(this.id);
-
-    }
-
-
-}
 export const handleCartClick = () => {
 
     const cartElement = document.getElementById("cart-container");
@@ -70,66 +40,66 @@ const handleCollapseCart = (e) => {
 
 }
 
-   document.addEventListener("click", (e) => { 
-
-       document.getElementById("root").addEventListener("mouseover", (e) => {
-
-         
-           if (e.target.getAttribute("data-cart") == null){
-
-               document.addEventListener("mousedown", handleCollapseCart);
-           }
-
-
-       })
-      
-
-   });
-   
-export function getCartItems() {
-
-    const cartobject = localStorage.getItem("cart-data");
-
-    if (cartobject != undefined && cartobject != null) {
-
-        let jsonData = JSON.parse(cartobject);
-        return (
-            jsonData.map((item) => {
-
-                return (new CartData(item.id, item.title, item.price, item.image, item.description, item.quantity));
-
-            })
-        )
-    }
-
-}
-
 export default function Cart(props) {
 
-    const { setCartItemCount, cartItemCount, cartTotle, setCartTotle, cartItems, setCartItems, updateCartList } = useContext(CartContext);
+    const { updateCart } = useContext(CartContext);
     const navigate = useNavigate();
+    const cartList = useSelector((state) => state.cartData.cartList);
+    const total = useSelector((state) => state.cartData.total);
+    const items = useSelector((state) => state.cartData.items);
+    const dispatch = useDispatch();
 
     const handleCheckout = (e) => {
-
-        navigate("/checkout");
+       
+    
+       
+        console.log(cartList);
+    
+       // navigate("/checkout");
     }
+    useEffect(() => {
 
+        dispatch(loadCart());
+        document.addEventListener("click", (e) => {
+
+            document.getElementById("root").addEventListener("mouseover", (e) => {
+
+
+                if (e.target.getAttribute("data-cart") == null) {
+
+                    document.addEventListener("mousedown", handleCollapseCart);
+                }
+
+
+            })
+
+
+        });
+
+    }, [])
+    useEffect(() => {
+
+        const values = tallyCart(cartList);
+        dispatch(updateCartStatus(values));
+      
+    }, [cartList])
+   
     return (
         <>
 
             <div id="cart-container" className="cart-container cart-container-hidden" data-cart="cart" >
                 <div className="cartid0" data-cart="cart">
-
                     {
-                        cartItems
+                        updateCart().cartList
                     }
                 </div>
                 <div className="cartid1" data-cart="cart">
                     <div className="cart-total" data-cart="cart">
-                        <label id="totle" data-cart="cart">Total: ${cartTotle}</label>
-                        <label id="items" data-cart="cart">Items: {cartItemCount}</label>
+                        <label id="totle" data-cart="cart">Total: ${total}</label>
+                        <label id="items" data-cart="cart">Items: {items}</label>
                     </div>
                     <button type="button" data-cart="cart" onClick={handleCheckout} >Check Out</button>
+                   
                 </div>
 
             </div>

@@ -8,11 +8,12 @@ import ProductListing, {productListingContext } from "./pages/ProductListing"
 import { HeaderContext } from "./components/Header.jsx"
 import CategoryOption, { OptionsCategory } from "./components/catagoryOption.jsx"
 import { useState, useEffect } from "react"
-import Cart, { CartContext, getCartItems, CartData } from "./components/Cart.jsx";
+import { CartContext} from "./components/Cart.jsx";
 import {useQuery} from "@tanstack/react-query"
 import CartItem from './components/CartItem'
 import CheckOut from './pages/CheckOut.jsx'
-
+import {updateItem,loadCart,removeItem,addToCart, setCart } from "./state/slices/cartslice"
+import { useSelector, useDispatch } from 'react-redux'
 
 
 async function getCategories() {
@@ -38,14 +39,13 @@ export default function App() {
     const [search, setSearch] = useState("");
     const [shopCatagory, setShopCatagory] = useState("All");
     const [products, setProducts] = useState([]);
-    const [cartItems, setCartItems] = useState([]);
-    const [cartTotle, setCartTotle] = useState(0);
-    const [cartItemCount, setCartItemCount] = useState(0);
     const { data, isLoading, error } = useQuery({ queryKey: ['categories'], queryFn: getCategories });
-  
+    const ItemsList = useSelector((state) => state.cartData.cartList);
+    const dispatch = useDispatch();
 
     useEffect(() => {
 
+       // localStorage.setItem("cart-1", JSON.stringify([]));
         if (isLoading) {
 
             console.log("Loading...");
@@ -63,52 +63,65 @@ export default function App() {
 
 
     }, [isLoading])
-
-    const updateCartList = () => {
-
-        console.log(cartItems);
-
-        localStorage.setItem("cart-data", JSON.stringify(Array.from(cartItems)));
-    }
-    const handleLoadCart= () => {
-
-        let cartData = localStorage.getItem('cart-data');
-        console.log(cartData);
-    }
-    const updateCartItem = (id,quantity) => {
        
-      let newCartList =  cartItems.map((item) => {
+    const updateCart = () => {
 
-            if (item.props.id == id) {
+      
+        let list = [];
+        let itemc = 0;
+        let totalc = 0;
+        const results = {
 
-                return (<CartItem key={item.props.id} id={item.props.id} title={item.props.title} quantity={quantity} price={item.props.price} image={item.props.image} />)
-            }
-            else {
+            cartList:[],
+            total:0,
+            items:0
+        }
 
-                return (<CartItem key={item.props.id} id={item.props.id} title={item.props.title} quantity={item.props.quantity} price={item.props.price} image={item.props.image} />)
-            }
-      })
-        setCartItems(newCartList);
-        return (newCartList);
+        
+
+        if (ItemsList) {
+
+           
+            list = ItemsList.map((item) => {
+                itemc += item.quantity;
+                totalc += item.price * item.quantity;
+
+
+                return (
+
+                   
+                    <CartItem key={item.id} id={item.id} title={item.title} quantity={item.quantity} price={item.price} image={item.imageSrc} />
+                )
+            });
+            results.total = totalc;
+            results.items = itemc;
+            results.cartList = list;
+
+            return (results);
+        }
+        else {
+            results.cartList = [];
+            results.items = 0;
+            results.total = 0;
+
+            return (results);
+        }
        
     }
     const handleAddToCart = (e) => {
 
-
+      
         let qty = e.target.getAttribute("data-qty");
         let itemData = JSON.parse(e.target.getAttribute("data-item"));
-     
-         if(!CartData.cartList.get(itemData.id)) {
+        const payload = {
 
-             let item = new CartData(itemData.id, itemData.title, itemData.price, (itemData.imageSrc) ? itemData.imageSrc : itemData.image, itemData.description, (qty != null) ? qty : itemData.quantity);
-           
-             updateCartList();
-             setCartItems(returnCartItems(CartData.cartList.values()));
-             
-
-
-        }
+            item: itemData,
+            qty: qty
+        };
+        dispatch(addToCart(payload));
        
+                
+             
 
     }
     const returnCartItems = (list) => {
@@ -128,22 +141,18 @@ export default function App() {
     const handleRemove = (e) => {
         
         let prdid = e.target.getAttribute("data-itemid");
-        CartData.cartList.delete(parseInt(prdid));
-        updateCartList();
-        setCartItems(returnCartItems(CartData.cartList.values()));
+        
+        //CartData.cartList.delete(parseInt(prdid));
+        console.log(prdid);
+        dispatch(removeItem(prdid));
+        //updateCartList();
+        //setCartItems(returnCartItems(CartData.cartList.values()));
        
-
-    }
-    const updateQuantity = (e) => {
-
-        let itemid = parseInt(e.target.getAttribute("data-itemid"));
-        CartData.cartList.get(itemid).quantity = e.target.value;
-        updateCartList();
 
     }
     return (
 
-        <CartContext.Provider value={{ updateQuantity, setCartItemCount, cartItemCount, cartTotle, setCartTotle, cartItems, setCartItems, updateCartList, handleAddToCart, handleRemove, returnCartItems, updateCartItem, handleLoadCart }}>
+        <CartContext.Provider value={{ handleAddToCart, handleRemove, returnCartItems,updateCart }}>
         <productListingContext.Provider value={{ search, setSearch, shopCatagory, setShopCatagory, products, setProducts}}>
         <HeaderContext.Provider value={{ options,setOptions }}>
                 <Router>

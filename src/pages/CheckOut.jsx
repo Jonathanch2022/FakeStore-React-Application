@@ -1,8 +1,7 @@
 import Header from "../components/Header"
 import "../css/checkout.css"
 import { useState, useContext, useEffect } from 'react'
-import Cart, { getCartItems, CartData, CartContext } from "../components/Cart"
-import CartItem from "../components/CartItem";
+import { CartContext } from "../components/Cart"
 import placeholder from "../assets/placeholder.png"
 import TitleHeader from "../components/TitleHeader"
 import Orders, { order } from "../components/Orders"

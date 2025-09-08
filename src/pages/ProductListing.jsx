@@ -1,9 +1,7 @@
 import { useLocation, useSearchParams } from 'react-router-dom'
-import { useState, useEffect, useContext, createContext, useRef } from 'react'
+import { useState, useEffect, useContext, createContext } from 'react'
 import Header from "../components/Header.jsx"
 import Product from "../components/Product.jsx"
-import CartItem from "../components/CartItem.jsx"
-import Cart, { CartContext, getCartItems, CartData } from "../components/Cart.jsx"
 import { useQuery } from '@tanstack/react-query'
 
 export async function getProduct(id) {
@@ -30,7 +28,6 @@ export default function ProductListing() {
    
     const [searchParams, setSearchParams] = useSearchParams();
     const { search, setSearch, shopCatagory, setShopCatagory, products, setProducts } = useContext(productListingContext);
-    const { handleAddToCart, updateCartList, handleRemove, returnCartItems } = useContext(CartContext);
     const { data, isLoading, error } = useQuery({ queryKey: ['products'], queryFn: getProduct});
     const location = useLocation();
     

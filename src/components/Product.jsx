@@ -1,9 +1,10 @@
 import Button from 'react-bootstrap/Button'
 import { useNavigate } from 'react-router-dom'
 import RateStar from './RateStar';
-import Cart, { CartContext, getCartItems, CartData } from "../components/Cart.jsx"
-import { useState, useEffect, useContext, createContext, useRef } from 'react'
-
+import { CartContext } from "../components/Cart.jsx"
+import { useState, useEffect, useContext} from 'react'
+import { addToCart } from "../state/slices/cartslice"
+import { useSelector, useDispatch } from 'react-redux'
 export class ProductItem {
     constructor(id, title, price, description, category, image) {
         this.id = parseInt(id);
@@ -35,6 +36,8 @@ export default function Product(props) {
     const Navigate = useNavigate();
     let productID = props.productid;
     const { handleAddToCart } = useContext(CartContext);
+    const dispatch = useDispatch();
+
 
     const itemData = {
 

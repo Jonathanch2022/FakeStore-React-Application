@@ -6,7 +6,7 @@ import { createContext, useContext } from "react"
 import CatagoryOption from "../components/catagoryOption"
 import {productListingContext} from "../pages/ProductListing" 
 import { useEffect } from 'react'
-import Cart, { getCartItems, CartData, handleCartClick } from "../components/Cart"
+import Cart, {handleCartClick } from "../components/Cart"
 export default function Header(props) {
 
     const navigate = useNavigate();

@@ -4,8 +4,7 @@ import "../css/common.css";
 import placeholder from "../assets/placeholder.png"
 import Button from "react-bootstrap/Button"
 import { useEffect, useState, useContext } from 'react'
-import Cart, { getCartItems, CartData, CartContext } from "../components/Cart.jsx"
-import CartItem from "../components/CartItem.jsx"
+import { CartContext } from "../components/Cart.jsx"
 import { getProduct } from "./ProductListing.jsx"
 import { ProductItem } from "../components/Product.jsx"
 import { useQuery, useMutation } from '@tanstack/react-query'

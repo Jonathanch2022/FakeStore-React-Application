@@ -2,22 +2,12 @@
 import { useNavigate} from 'react-router-dom' 
 import Button from 'react-bootstrap/Button';
 import Header from "../components/Header.jsx"
-import Cart,{ getCartItems, CartData } from '../components/Cart.jsx';
-import CartItem from '../components/CartItem.jsx';
-import { useState } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
 export default function Home() {
     let place = "Home Page";
    
     const navigate = useNavigate();
     let productid = -1;
   
-    
-
-   //Needed for product cart function
-    const [cartItems, setCartItems] = useState(getCartItems() || []);
-   
    
     //End of product cart function requirement 
 

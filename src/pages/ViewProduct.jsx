@@ -1,12 +1,11 @@
 import { useNavigate,useSearchParams } from 'react-router-dom'
 import Header from "../components/Header.jsx"
-import CartItem from "../components/CartItem.jsx"
 import { useEffect, useState, useContext, useRef } from 'react'
-import Cart, { getCartItems, CartData, CartContext } from "../components/Cart.jsx"
+import { CartContext } from "../components/Cart.jsx"
 import Rating from "../components/RateStar.jsx"
 import { useQuery,useMutation } from '@tanstack/react-query'
-import ProductItem from "../components/Product.jsx"
 import { getProduct } from "./ProductListing.jsx"
+import { useSelector, useDispatch } from 'react-redux'
 export default function ProductDetails() {
 
 
@@ -47,8 +46,8 @@ export default function ProductDetails() {
 
    
     useEffect(() => {
-        console.log(getCartItems());
-        setCartItems(getCartItems() || []);
+       // console.log(getCartItems());
+       // setCartItems(getCartItems() || []);
         
        
       
