@@ -8,18 +8,19 @@ import Orders, { order } from "../components/Orders"
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom"
 import { AlertBox } from "../components/Alert"
 import sucessCheckout from "../assets/sucessCheckout.png"
-
+import { loadCart, setCart, updateCartStatus, tallyCart, resetCart } from "../state/slices/cartslice"
+import { useSelector, useDispatch } from "react-redux"
+import CartItem from "../components/CartItem"
 export default function CheckOut() {
 
-    const { cartItems, setCartItems, setCartItemCount, cartItemCount, cartTotle, setCartTotle, handleLoadCart, updateCartList } = useContext(CartContext);
+   
     const [showAlet, setShowAlert] = useState([]);
-    useEffect(() => {
-
-        handleLoadCart();
-        //let list = [];
-       // list.push(<CartItem key={0} id={0} image={placeholder} title={"Placeholder Item"} price={10} quantity={2} />);
-       // setCartItems(list);
-    },[])
+    const cartList = useSelector((state) => state.cartData.cartList);
+    const total = useSelector((state) => state.cartData.total);
+    const items = useSelector((state) => state.cartData.items);
+    const dispatch = useDispatch();
+    const shipping = 5;
+    const tax = 8;
     const validateForm = (e) => {
 
         let valid = true;
@@ -108,11 +109,10 @@ export default function CheckOut() {
     const handleCompleteOrder = (e) => {
         e.preventDefault();
 
-        if (validateForm(e.target)) {
+        if (!validateForm(e.target)) {
             setShowAlert(AlertBox.showAlert(false, "Purchase Complete!", "Thank you, Your order has been successfully submitted!", "Order Complete", sucessCheckout));
             let orderData = order.createOrder(e.target);
-            setCartItems([]);
-            updateCartList();
+            dispatch(resetCart());
             console.log(orderData);
             console.log(order.orderHistory);
         }
@@ -155,25 +155,49 @@ export default function CheckOut() {
                             <input id="expirationDate" type="text" placeholder="Expiry Date (MM/YY)"></input>
                             <input id="cvv" type="text" placeholder="CVV"></input>
                     </div>
-                    <input type="hidden" id="cart" value={JSON.stringify(cartItems)}></input>
-                    <input type="hidden" id="items" value={cartItemCount}></input>
-                    <input type="hidden" id="total" value={cartTotle}></input>
+                    <input type="hidden" id="cart" value={JSON.stringify(cartList)}></input>
+                    <input type="hidden" id="items" value={items}></input>
+                    <input type="hidden" id="total" value={(items > 0)? total + shipping + ((tax / 100) * (total + shipping)):0}></input>
+                    <input type="hidden" id="tax" value={(items > 0)?(tax / 100) * (total + shipping):0}></input>
+                    <input type="hidden" id="subtotal" value={total}></input>
+                    <input type="hidden" id="shipping" value={shipping * items}></input>
 
 
 
                 </div>
                 <div className="cartitem-container2">
-
+                   
                     <TitleHeader title={"Order Summary"} />
 
                     <div className="cart-data2">
                         {
-                            cartItems
+                            cartList.map((item) => {
+
+
+                                return (
+
+                                    <CartItem key={item.id} id={item.id} title={item.title} quantity={item.quantity} price={item.price} image={(item.imageSrc) ? item.imageSrc : item.image} />
+                                )
+                            })
                         }
+
+                    </div>
+              
+                    <div className="cart-total2">
+                       
+                        <div className="cart-total2-div">
+
+                            <div id="subtotal">Subtotal: <span className="cart-total2-text">${total}</span></div>
+                            <div id="shipping">Shipping: <span className="cart-total2-text">${shipping * items}</span></div>
+                            <div id="taxies">Taxs: <span className="cart-total2-text">${(items > 0) ? (tax / 100) * (total + shipping) : 0}</span></div>
+                            <div id="total">Total: <span className="cart-total2-text">${(items > 0) ? total + shipping + ((tax / 100) * (total + shipping)) : 0}</span></div>
+                            <div id="items">Items: <span className="cart-total2-text">{items}</span></div>
+                        </div>
 
                     </div>
                     <button type="submit" id="checkout-button">Place Order</button>
                 </div>
+              
             </form>
             
         </>

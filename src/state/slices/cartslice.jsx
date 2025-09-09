@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
-import CartItem from "../../components/CartItem";
+
+
 
 export function tallyCart(itemList) {
 
@@ -14,13 +15,14 @@ export function tallyCart(itemList) {
         items:newcount,
         total: newtotal
     }
+    
     return (values);
 }
 export const counterSlice = createSlice({
     name: 'cartData',
     initialState: {
-        total: 10,
-        items: 15,
+        total: 0,
+        items: 0,
         cartList:[]
     },
     reducers: {
@@ -31,7 +33,7 @@ export const counterSlice = createSlice({
                 for (let t in state.cartList) {
 
                    
-                    if (state.cartList[t].id == action.payload.item.id) {
+                    if (state.cartList[t].id == action.payload.id) {
 
                         exist = true;
                         break;
@@ -39,37 +41,32 @@ export const counterSlice = createSlice({
                 }
                 if (!exist) {
                    
-                    state.cartList.push(action.payload.item);
+                    state.cartList.push(action.payload);
                    
                 }
                 else {
 
-                    state.cartList =  state.cartList.map((item) => {
+                   // state.cartList = [];
 
-                        if (item.id == action.payload.item.id) {
+                    for (let t in state.cartList) {
 
-                            if (action.payload.qty == null || action.payload.qty == 0) {
-                                item.quantity += 1;
-                               
-                             
-                            }
-                            else {
+                        if (state.cartList[t].id == action.payload.id) {
 
-                                item.quantity += parseInt(action.payload.qty);
-                               
-                            }
-                           
-                            
+                            state.cartList[t].quantity += action.payload.quantity;
+                            break;
                         }
-                        return (item);
-                    })
-                   
+                    }
+                     
                 }
               
             
 
             }
             
+        },
+        resetCart: (state, action) => {
+            state.cartList = [];
+            localStorage.setItem("cart-1", JSON.stringify([]));
         },
         setCart: (state, action) => {
             state.cartList = action.payload;
@@ -117,4 +114,4 @@ export const counterSlice = createSlice({
     }
 })
 
-export const { updateItem, loadCart, removeItem, addToCart, updateCartStatus, setCart } = counterSlice.actions
+export const { resetCart,updateItem, loadCart, removeItem, addToCart, updateCartStatus, setCart } = counterSlice.actions

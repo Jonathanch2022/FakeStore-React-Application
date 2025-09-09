@@ -26,6 +26,9 @@ export class order {
     cart;
     total = 0;
     items = 0;
+    shipping = 0;
+    tax = 0;
+    subtotal = 0;
 
     static loadOrderHistory() {
 
@@ -52,6 +55,10 @@ export class order {
                 ord.zipcode = orderData.zipcode;
                 ord.phonenumber = orderData.phonenumber;
                 ord.email = orderData.email;
+                ord.shipping = orderData.shipping;
+                ord.tax = orderData.tax;
+                ord.subtotal = orderData.subtotal;
+                
 
 
 
@@ -80,7 +87,11 @@ export class order {
         newOrder.zipcode = data.zip.value;
         newOrder.phonenumber = data.phone.value;
         newOrder.email = data.email.value;
+        newOrder.shipping = data.shipping.value;
+        newOrder.tax = data.tax.value;
+        newOrder.subtotal = data.subtotal.value;
         order.orderHistory.push(newOrder);
+       
 
         return (newOrder);
     

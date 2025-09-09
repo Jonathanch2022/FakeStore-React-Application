@@ -3,6 +3,7 @@ import "../css/cart.css"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 import { loadCart, setCart, updateCartStatus, tallyCart } from "../state/slices/cartslice"
+import  CartItem  from "./CartItem";
 
 export const handleCartClick = () => {
 
@@ -42,7 +43,7 @@ const handleCollapseCart = (e) => {
 
 export default function Cart(props) {
 
-    const { updateCart,handleAddToCart } = useContext(CartContext);
+    const { updateCart, handleAddToCart} = useContext(CartContext);
     const navigate = useNavigate();
     const cartList = useSelector((state) => state.cartData.cartList);
     const total = useSelector((state) => state.cartData.total);
@@ -50,16 +51,13 @@ export default function Cart(props) {
     const dispatch = useDispatch();
 
     const handleCheckout = (e) => {
-       
-    
-       
-        console.log(cartList);
-    
-       // navigate("/checkout");
+
+       navigate("/checkout");
     }
     useEffect(() => {
 
         dispatch(loadCart());
+
         document.addEventListener("click", (e) => {
 
             document.getElementById("root").addEventListener("mouseover", (e) => {
@@ -81,6 +79,7 @@ export default function Cart(props) {
 
         const values = tallyCart(cartList);
         dispatch(updateCartStatus(values));
+        
 
     }, [cartList])
    
@@ -90,7 +89,14 @@ export default function Cart(props) {
             <div id="cart-container" className="cart-container cart-container-hidden" data-cart="cart" >
                 <div className="cartid0" data-cart="cart">
                     {
-                        updateCart().cartList
+                        cartList.map((item) => {
+                           
+  
+                            return (
+
+                                <CartItem key={item.id} id={item.id} title={item.title} quantity={item.quantity} price={item.price} image={(item.imageSrc) ? item.imageSrc : item.image} />
+                            )
+                        })
                     }
                 </div>
                 <div className="cartid1" data-cart="cart">

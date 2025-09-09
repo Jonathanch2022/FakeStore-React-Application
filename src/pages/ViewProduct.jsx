@@ -98,7 +98,7 @@ export default function ProductDetails() {
                        
                         <div className="action-buttons">
                             <label htmlFor="quantity">Quantity:</label>
-                            <input type="number" name="quantity" id="quantity" onBlur={(e) => { setQty(e.target.value) }} />
+                            <input type="number" name="quantity" id="quantity" onBlur={(e) => { setQty(e.target.value) }} defaultValue={1} min={1} />
                             <button className="btn btn-primary cart-bt" data-qty={qty} data-item={JSON.stringify(product)} onClick={handleAddToCart}>Add to Cart</button>
                             <button className="btn btn-primary" onClick={handleEdit}>Edit</button>
                         </div>

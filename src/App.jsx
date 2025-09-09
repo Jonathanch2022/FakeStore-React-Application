@@ -40,6 +40,7 @@ export default function App() {
     const [shopCatagory, setShopCatagory] = useState("All");
     const [products, setProducts] = useState([]);
     const { data, isLoading, error } = useQuery({ queryKey: ['categories'], queryFn: getCategories });
+    const [shoppingCart, setShoppingCart] = useState([]);
     const ItemsList = useSelector((state) => state.cartData.cartList);
     const dispatch = useDispatch();
 
@@ -111,14 +112,23 @@ export default function App() {
     const handleAddToCart = (e) => {
 
       
-        let qty = e.target.getAttribute("data-qty");
+        let qty = parseInt(e.target.getAttribute("data-qty"));
+        console.log(qty);
         let itemData = JSON.parse(e.target.getAttribute("data-item"));
-        const payload = {
-
-            item: itemData,
-            qty: qty
-        };
-        dispatch(addToCart(payload));
+        console.log(itemData);
+        const prd = {
+            description: itemData.description,
+            id: itemData.id,
+            image: (itemData.imageSrc) ? itemData.imageSrc : itemData.image,
+            price: itemData.price,
+            quantity: (itemData.quantity) ? parseInt(itemData.quantity) : (qty < 1) ? 1:qty,
+            rating: itemData.rating,
+            ratingCount: itemData.ratingCount,
+            title: itemData.title
+               
+        }
+      
+        dispatch(addToCart(prd));
         
        
                 
@@ -153,7 +163,7 @@ export default function App() {
     }
     return (
 
-        <CartContext.Provider value={{ handleAddToCart, handleRemove, returnCartItems,updateCart }}>
+        <CartContext.Provider value={{ handleAddToCart, handleRemove, returnCartItems, updateCart}}>
         <productListingContext.Provider value={{ search, setSearch, shopCatagory, setShopCatagory, products, setProducts}}>
         <HeaderContext.Provider value={{ options,setOptions }}>
                 <Router>

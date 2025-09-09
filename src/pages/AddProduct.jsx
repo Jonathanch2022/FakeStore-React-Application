@@ -86,14 +86,14 @@ const validateForm = (e) => {
 }
 export default function AddProduct() {
     let place = "Create Product Page";
-    const [searchParams, setSearchParams] = useSearchParams();
+
     const {mutateAsync:AddPost } = useMutation({
         mutationFn: postData
        
     })
     //Needed for product cart function
-    const [cartItems, setCartItems] = useState(getCartItems() || []);
-    const { updateQuantity, handleRemove, returnCartItems, updateCartList } = useContext(CartContext);
+  
+   
     const [Alert, setAlert] = useState([]); 
     const handleSubmit = (e) => {
         e.preventDefault();
