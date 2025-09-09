@@ -21,6 +21,16 @@ export default function CheckOut() {
     const dispatch = useDispatch();
     const shipping = 5;
     const tax = 8;
+    const checkOutProperties = {
+        shippingRate: 5,
+        taxrate: 8,
+        shippingTotal: 0,
+        taxTotal:0,
+        itemTotal:0,
+        subTotal:0,
+        total:0
+       
+    }
     const validateForm = (e) => {
 
         let valid = true;
@@ -176,7 +186,7 @@ export default function CheckOut() {
 
                                 return (
 
-                                    <CartItem key={item.id} id={item.id} title={item.title} quantity={item.quantity} price={item.price} image={(item.imageSrc) ? item.imageSrc : item.image} />
+                                    <CartItem key={item.id + "C"} id={item.id + "C"} orginid={item.id} title={item.title} quantity={item.quantity} price={item.price} image={(item.imageSrc) ? item.imageSrc : item.image} />
                                 )
                             })
                         }

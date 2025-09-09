@@ -140,7 +140,7 @@ export default function App() {
         if (list) {
             let itemList = Array.from(list).map((cartItem) => {
 
-                return (<CartItem key={cartItem.id} id={cartItem.id} title={cartItem.title} quantity={cartItem.quantity} price={cartItem.price} image={cartItem.image} />)
+                return (<CartItem key={cartItem.id} id={cartItem.id} orginid={cartItem.id} title={cartItem.title} quantity={cartItem.quantity} price={cartItem.price} image={cartItem.image} />)
             });
             
             return (itemList);

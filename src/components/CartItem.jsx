@@ -14,13 +14,14 @@ export default function CartItem(props) {
 
 	const handleUpdateQty = (e) => {
 
-	
-		let newvalue = document.getElementById("qty" + props.id);
+
+		let newvalue = (document.getElementById("qty" + props.id + "C")) ? document.getElementById("qty" + props.id + "C") : document.getElementById("qty" + props.id);
+		
 		const payload = {
-			id: props.id,
+			id: props.orginid,
 			qty: newvalue.value
 		}
-		newvalue.value = props.quantity;
+
 		dispatch(updateItem(payload));
 		
 		
@@ -28,7 +29,7 @@ export default function CartItem(props) {
 	useEffect(() => {
 
 		document.getElementById("qty" + props.id).value = props.quantity;
-		console.log(props.quantity);
+		
 		setQty(props.quantity);
 
 	}, [props.quantity]);

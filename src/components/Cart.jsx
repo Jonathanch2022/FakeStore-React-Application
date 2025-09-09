@@ -94,7 +94,7 @@ export default function Cart(props) {
   
                             return (
 
-                                <CartItem key={item.id} id={item.id} title={item.title} quantity={item.quantity} price={item.price} image={(item.imageSrc) ? item.imageSrc : item.image} />
+                                <CartItem key={item.id} id={item.id} orginid={item.id} title={item.title} quantity={item.quantity} price={item.price} image={(item.imageSrc) ? item.imageSrc : item.image} />
                             )
                         })
                     }
