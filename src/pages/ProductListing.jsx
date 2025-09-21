@@ -3,6 +3,7 @@ import { useState, useEffect, useContext, createContext } from 'react'
 import Header from "../components/Header.jsx"
 import Product from "../components/Product.jsx"
 import { useQuery } from '@tanstack/react-query'
+import { firestore } from '../components/firestore.jsx'
 
 export async function getProduct(id) {
     
@@ -16,25 +17,45 @@ export async function getProduct(id) {
     }).then((e) => {
 
         if (e.ok) {
-
+           
             return (e.json());
         }
     })
     return (response);
 }
 export default function ProductListing() {
-
-   
+    
    
     const [searchParams, setSearchParams] = useSearchParams();
     const { search, setSearch, shopCatagory, setShopCatagory, products, setProducts } = useContext(productListingContext);
-    const { data, isLoading, error } = useQuery({ queryKey: ['products'], queryFn: getProduct});
+  
     const location = useLocation();
     
     
+    let handleProductQuery = async () => {
+       
+        
+        
+        if (await firestore.getProducts("products", "") == null) {
+         
+            let prdData = await getProduct();
+            const docid = await firestore.uploadProducts("products", prdData);
+            let list = await firestore.getProducts("products");
+           
+            return (list.data);
+        }
+        else {
+
+            let list = await firestore.getProducts("products");
+           
+            return (list.data);
+        }
+
+    }
+    const { data, isLoading, error } = useQuery({ queryKey: ['products'], queryFn: handleProductQuery });
 
    
-    let handleGetData = (e) => {
+    let handleGetData = async () => {
 
         let search_keywords = searchParams.get("search") || "";
 
@@ -44,10 +65,10 @@ export default function ProductListing() {
 
         }
 
-
+       
         if (data) {
-
-
+       
+            
 
             if (search_keywords != "") {
 
@@ -87,12 +108,8 @@ export default function ProductListing() {
 
         handleGetData();
 
-    }, [location.search, localStorage.getItem("cart-data")])
-    useEffect(() => {
+    }, [location.search, localStorage.getItem("cart-data"), isLoading])
 
-        handleGetData();
-
-    }, [isLoading]);
     function productList (){
 
        

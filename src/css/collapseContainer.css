@@ -1,0 +1,66 @@
+.collapseDiv{
+
+    width:100%;
+    height:40px;
+    max-height:238px;
+
+    background-color:cyan;
+    overflow:hidden;
+}
+.collapseDiv:hover{
+    height:250px;
+    transition: height 0.9s ease;
+}
+.collapseDiv .cDiv{
+    width:100%;
+    text-align:left;
+    padding-left:10px;
+}
+.collapseHeading{
+
+    width:100%;
+    height:auto;
+    display:block;
+}
+#header{
+
+   
+    height:40px;
+    padding-top:7px;
+    width:50%;
+    text-align:left;
+    font-weight:bolder;
+    padding-left:10px;
+}
+#header1 {
+   
+    height: 35px;
+    padding-top: 7px;
+    width:50%;
+    text-align:right;
+    font-weight:bolder;
+    padding-right:10px;
+    
+}
+#h1container {
+    background-color: yellow;
+    display: flex;
+    width: 100%;
+    margin-bottom:1px;
+}
+#h1containerbt {
+    background-color: yellow;
+    display: block;
+    width: 100%;
+    height:40px;
+    padding-top:7px;
+    padding-right:10px;
+  
+   
+}
+#headerbt {
+
+    text-align:right;
+    font-weight:bolder;
+}
+

@@ -3,7 +3,10 @@ import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, useSe
 import Home  from "./pages/Home"
 import AddProduct  from "./pages/AddProduct" 
 import EditProduct  from "./pages/EditProduct"
-import ViewProduct  from "./pages/ViewProduct"
+import ViewProduct from "./pages/ViewProduct"
+import SignUp from "./pages/SignUp"
+import Login from "./pages/Login"
+import { auth } from "./firebaseConfig"
 import ProductListing, {productListingContext } from "./pages/ProductListing"
 import { HeaderContext } from "./components/Header.jsx"
 import CategoryOption, { OptionsCategory } from "./components/catagoryOption.jsx"
@@ -14,6 +17,10 @@ import CartItem from './components/CartItem'
 import CheckOut from './pages/CheckOut.jsx'
 import {updateItem,loadCart,removeItem,addToCart, setCart, updateCartStatus } from "./state/slices/cartslice"
 import { useSelector, useDispatch } from 'react-redux'
+import { onAuthStateChanged, signOut } from "firebase/auth"
+import { firestore } from "./components/firestore"
+import UserProfile from "./pages/UserProfile"
+
 
 
 async function getCategories() {
@@ -43,6 +50,7 @@ export default function App() {
     const [shoppingCart, setShoppingCart] = useState([]);
     const ItemsList = useSelector((state) => state.cartData.cartList);
     const dispatch = useDispatch();
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
 
@@ -64,7 +72,17 @@ export default function App() {
 
 
     }, [isLoading])
-       
+    useEffect(() => {
+        const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+
+            setUser(currentUser);
+        });
+        return () => unSubscribe();
+    }, [])
+
+    const handleLogOut = () => {
+        signOut(auth);
+    }
     const updateCart = () => {
 
       
@@ -162,26 +180,28 @@ export default function App() {
 
     }
     return (
-
-        <CartContext.Provider value={{ handleAddToCart, handleRemove, returnCartItems, updateCart}}>
-        <productListingContext.Provider value={{ search, setSearch, shopCatagory, setShopCatagory, products, setProducts}}>
-        <HeaderContext.Provider value={{ options,setOptions }}>
-                <Router>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/add-product" element={<AddProduct />} />
-                        <Route path="/edit-product" element={<EditProduct />} />
-                        <Route path="/view-product" element={<ViewProduct />} />
-                        <Route path="/product-listing" element={<ProductListing />} />
-                        <Route path="/checkout" element={<CheckOut/> } />
-
-                    </Routes>
-
-                </Router>
-            </HeaderContext.Provider>
-            </productListingContext.Provider>
-            </CartContext.Provider>
+       
+            <CartContext.Provider value={{ handleAddToCart, handleRemove, returnCartItems, updateCart}}>
+                <productListingContext.Provider value={{ search, setSearch, shopCatagory, setShopCatagory, products, setProducts}}>
+                    <HeaderContext.Provider value={{ options,setOptions }}>
+                            <Router>
+                                <Routes>
+                                    <Route path="/" element={<Home />} />
+                                    <Route path="/home" element={<Home />} />
+                                    <Route path="/add-product" element={<AddProduct />} />
+                                    <Route path="/edit-product" element={<EditProduct />} />
+                                    <Route path="/view-product" element={<ViewProduct />} />
+                                    <Route path="/product-listing" element={<ProductListing />} />
+                                    <Route path="/checkout" element={<CheckOut />} />
+                                    <Route path="/signup" element={<SignUp />} />
+                                    <Route path="/login" element={<Login />} />
+                                    <Route path="/profile" element={<UserProfile/> } />
+                                </Routes>
+                            </Router>
+                        </HeaderContext.Provider>
+                    </productListingContext.Provider>
+                </CartContext.Provider>
+            
         
 
 

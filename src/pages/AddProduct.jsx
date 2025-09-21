@@ -8,25 +8,15 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import {ProductItem} from "../components/Product.jsx" 
 import Success from "../assets/SuccessfulCheckmark.png"
 import { AlertBox } from "../components/Alert.jsx"
+import {firestore } from "../components/firestore.jsx"
 async function postData(data) {
 
     
-    const prd = new ProductItem(data.product_name.value, data.product_id.value, data.product_image.value, data.product_price.value, data.product_category.value, data.product_description.value);
-    let jsonData = JSON.stringify(prd);
-    let response = await fetch("https://fakestoreapi.com/products", {
-
-        method: "post",
-        headers: {
-
-            "Content-Type": "application/json"
-        },
-        body: jsonData
-            
-        
-
-
-    })
-    return (response);
+    const prd = new ProductItem(data.product_id.value, data.product_name.value, data.product_price.value, data.product_description.value, data.product_category.value, data.product_image.value);
+    //let jsonData = JSON.stringify(prd);
+    firestore.addProduct("products", prd);
+   
+    return ("Success");
 
 }
 const validateForm = (e) => {
@@ -144,12 +134,12 @@ export default function AddProduct() {
                             <label>Product ID:</label>
                             <input type="text" id="product_id" name="id" placeholder="Enter Product ID" />
                             <div id="alert-product-id" className="alert-hidden">Please enter a vaild product id</div>
-                            <label>Product Image:</label>              
-                            <input type="text" name="product_image" disabled={true} onError={(e) => { console.log(e) }} id="product_image" />
+                            <label>Product Image Url:</label>              
+                            <input type="text" name="product_image" disabled={false} onError={(e) => { console.log(e) }} id="product_image" />
                             <div id="alert-product-image" className="alert-hidden">Product image must not be blank</div>
-                            <Button id="inputFile" className="btn btn-dark" onClick={handleBrowse}>Browse</Button>
+                          
                             <label htmlFor="product_price">Product Price:</label>
-                            <input type="number" name="product_price" id="product-price" placeholder="Enter Product Price" />
+                            <input type="text" name="product_price" id="product-price" placeholder="Enter Product Price" />
                             <div id="alert-product-price" className="alert-hidden">Please enter a valid price</div>
                             <label htmlFor="product_category">Product Category:</label>
                             <input type="text"  name="category" id="product_category" placeholder="Enter Product Category" />

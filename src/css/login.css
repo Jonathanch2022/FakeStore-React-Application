@@ -1,0 +1,46 @@
+.loginContainer{
+
+    margin:auto;
+    width:500px;
+    height:auto;
+    background-color:black;
+    display:block;
+
+
+
+
+
+}
+.loginContainer form label {
+        margin-right: 5px;
+        color: white;
+        font-weight: bolder;
+        text-align:left;
+        width:100%;
+
+}
+.loginContainer form input{
+
+    width:100%;
+    margin-bottom:2px;
+}
+.loginContainer form button {
+    width: 100%;
+    margin-top: 5px;
+    font-weight: bolder;
+    font-size: 18px;
+    height: 35px;
+    background-color: rgb(42, 41, 41);    
+    color: white;
+}
+.loginContainer form button:hover {
+    color: black;
+    background-color: gold;
+}
+.loginContainer form{
+    padding-top:20px;
+    padding-bottom:65px;
+    display:lbock;
+    width:80%;
+    margin:auto;
+}

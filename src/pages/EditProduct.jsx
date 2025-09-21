@@ -6,10 +6,11 @@ import Button from "react-bootstrap/Button"
 import { useEffect, useState, useContext } from 'react'
 import { CartContext } from "../components/Cart.jsx"
 import { getProduct } from "./ProductListing.jsx"
-import { ProductItem } from "../components/Product.jsx"
+import Product, { ProductItem } from "../components/Product.jsx"
 import { useQuery, useMutation } from '@tanstack/react-query'
 import Success from "../assets/SuccessfulCheckmark.png"
 import { AlertBox } from "../components/Alert.jsx"
+import {firestore } from "../components/firestore.jsx"
 async function deleteData(id) {
 
     let response = await fetch("https://fakestoreapi.com/products/" + id, {
@@ -67,26 +68,41 @@ export default function EditProduct() {
     });
     const { handleRemove, updateQuantity} = useContext(CartContext);
     const [Alert, setAlert] = useState([]);
+    const [productList, setProductList] = useState([]);
     //End of product cart function requirement 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm(e.target)) {
+            let item = e.target;
+            let prd = new ProductItem(item.product_id.value, item.product_name.value, item.product_price.value, item.product_description.value, item.product_category.value, item.product_image.value);
+            let pr = productList.map((it) => {
 
-            UpdateData(e.target).then(a => {
+                if (it.id == prd.id) {
 
-                if (a.status == 200) {
-
-                    setAlert(AlertBox.showAlert(false, "Product Updated", "Item updated successfully", "Product Updated", Success));
-                    //navigate("/product-listing");
-
+                    it.title = prd.title;
+                    it.price = prd.price;
+                    it.description = prd.description;
+                    it.category = prd.category;
+                    it.image = prd.image;
+                   
+                    return (it);
                 }
                 else {
-
-                    setAlert(AlertBox.showAlert(false, "Update Error", "Product could not be updated", "Error updating product"));
-
+                    return (it);
                 }
             })
-           // postData(e.target);
+            
+            try {
+
+                firestore.saveProducts("products", pr);
+                setAlert(AlertBox.showAlert(false, "Product Updated", "Item updated successfully", "Product Updated", Success));
+            }
+            catch (e) {
+
+                setAlert(AlertBox.showAlert(false, "Update Error", "Product could not be updated", "Error updating product"));
+            }
+                     
+       
         }
     }
     const validateForm = (e) => {
@@ -149,21 +165,24 @@ export default function EditProduct() {
         let id = searchParams.get("productid");
         if (id) {
 
-            if(window.confirm("Are you sure you want to delete this product?")) {
- 
-                removeData(searchParams.get("productid")).then(a => {
+            if (window.confirm("Are you sure you want to delete this product?")) {
 
-                    if (a.status == 200) {
 
-                        setAlert(AlertBox.showAlert(false, "Product Has Been Deleted", "Item deleted successfully", "Product Deleted", Success));
-                        //navigate("/product-listing");
-                    }
-                    else {
+              
+                let updatedList = productList.filter((item) => item.id != id);
+              
+                try {
+                    firestore.saveProducts("products", updatedList);
 
-                        setAlert(AlertBox.showAlert(false, "Delete Error", "Product could not be deleted", "Error deleting product"));
-                    }
-                })
+                    setAlert(AlertBox.showAlert(false, "Product Has Been Deleted", "Item deleted successfully", "Product Deleted", Success));
+                    //navigate("/product-listing");
+                }
+                catch (e) { 
+                 
+                    setAlert(AlertBox.showAlert(false, "Delete Error", "Product could not be deleted", "Error deleting product"));
+                }
                
+              
                 
             }
             
@@ -192,21 +211,27 @@ export default function EditProduct() {
 
         if (id != null) {
 
-            getProduct(searchParams.get("productid")).then((a) => {
+            
+            let prdList = firestore.getProducts("products").then((list) => {
+                    setProductList(list.data);
+                    const a = list.data.filter((d) =>  d.id == id )[0];
+                  
+                    setProduct({
 
-                setProduct({
-
-                    id: a.id,
-                    title: a.title,
-                    price: a.price,
-                    description: a.description,
-                    category: a.category,
-                    image: a.image
+                        id: a.id,
+                        title: a.title,
+                        price: a.price,
+                        description: a.description,
+                        category: a.category,
+                        image: a.image
 
 
-                });
+                    });
+
+                })
                
-            })
+               
+           
         }
 
 
@@ -238,9 +263,9 @@ export default function EditProduct() {
                             <input type="text" id="product_id" name="id" value={product.id} onChange={handleChange} placeholder="Enter Product ID" />
                             <div id="alert-product-id" className="alert-hidden">Please enter a vaild product id</div>
                                 <label>Product Image:</label>
-                            <input type="text" id="product_image" value={product.image} onChange={handleChange} name="image" disabled={true} />
+                            <input type="text" id="product_image" value={product.image} onChange={handleChange} name="image" disabled={false} />
                             <div id="alert-product-image" className="alert-hidden">Product image must not be blank</div>
-                                <Button id="inputFile" className="btn btn-dark" onClick={handleBrowse}>Browse</Button>
+                               
                         
                                 <label htmlFor="product-price">Product Price:</label>
                             <input type="number" id="product_price" value={product.price} onChange={handleChange} name="price" placeholder="Enter Product Price" />

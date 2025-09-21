@@ -6,6 +6,7 @@ import Rating from "../components/RateStar.jsx"
 import { useQuery,useMutation } from '@tanstack/react-query'
 import { getProduct } from "./ProductListing.jsx"
 import { useSelector, useDispatch } from 'react-redux'
+import { firestore } from "../components/firestore.jsx";
 export default function ProductDetails() {
 
 
@@ -27,32 +28,21 @@ export default function ProductDetails() {
     let stocked = 15;
 
    
-    const handleGetData = () => {
+    const handleGetData = async () => {
       
         let id = searchParams.get("productid");
-        let dt = getProduct(id).then((a) => {
+        let prdList = await firestore.getProducts("products");
+        let item = prdList.data.filter((prd) => prd.id == id)[0];
            
-            setProduct(a);
-            setRatingCount(a.rating.count);
-            setRating(a.rating.rate);
-            
-            return (a);
-        })
-        
-        return (dt);
+            setProduct(item);
+            setRatingCount(item.rating.count);
+            setRating(item.rating.rate);
+                  
+        return (item);
     }
 
     const {isLoading } = useQuery({ queryKey: ['productItem'], queryFn: handleGetData});
 
-   
-    useEffect(() => {
-       // console.log(getCartItems());
-       // setCartItems(getCartItems() || []);
-        
-       
-      
-    },[])
-  
    
     const handleEdit = () => {
 

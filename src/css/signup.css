@@ -1,0 +1,46 @@
+.signUpContainer{
+
+    margin:auto;
+    width:500px;
+    height:auto;
+    background-color:black;
+    display:block;
+
+
+
+
+
+}
+.signUpContainer form label {
+        margin-right: 5px;
+        color: white;
+        font-weight: bolder;
+        text-align:left;
+        width:100%;
+
+}
+.signUpContainer form input{
+
+    width:100%;
+    margin-bottom:2px;
+}
+.signUpContainer form button {
+    width: 100%;
+    margin-top: 5px;
+    font-weight: bolder;
+    font-size: 18px;
+    height: 35px;
+    background-color: rgb(42, 41, 41);    
+    color: white;
+}
+.signUpContainer form button:hover {
+    color: black;
+    background-color: gold;
+}
+.signUpContainer form{
+    padding-top:20px;
+    padding-bottom:65px;
+    display:lbock;
+    width:80%;
+    margin:auto;
+}
