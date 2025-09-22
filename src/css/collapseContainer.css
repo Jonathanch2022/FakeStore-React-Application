@@ -6,6 +6,7 @@
 
     background-color:cyan;
     overflow:hidden;
+    overflow-y:scroll;
 }
 .collapseDiv:hover{
     height:250px;

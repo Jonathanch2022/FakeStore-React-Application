@@ -18,6 +18,8 @@ export default function CollapsContainer(props) {
                     props.history
                 }
                 <CartItem></CartItem>
+                <CartItem></CartItem>
+                <CartItem></CartItem>
                
             </div>
             <div id="h1containerbt">
