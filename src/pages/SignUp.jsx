@@ -11,7 +11,6 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [msg, setMsg] = useState("");
     const [name, setName] = useState("");
-    const [ar, setAr] = useState([]);
     const [userDocCollection, setUserDocCollection] = useState(null);
     const [userDoc, setUserDoc] = useState(null);
     const [user, setUser] = useState(null);
@@ -22,14 +21,22 @@ export default function SignUp() {
         let em = e.target.email.value;
         let ps = e.target.password.value;
         let cps = e.target.comfirmpassword.value;
-        setAr(["NULL","NULL"]);
-       
-        console.log(em + " " + ps + " " + cps);
+     
         if (ps == cps) {
             
             try {
 
-                const uid = await firestore.createAccount(email, password, { name, email, ar },"users");
+                const uid = await firestore.createAccount(email, password, {
+                    name: "",
+                    address: '',
+                    city: "",
+                    state: "",
+                    zip: "",
+                    country: '',
+                    phone:"",
+                    orderHistory: []
+
+                }, "users");
                 if (uid.user) {
 
                     setUser(uid.user);

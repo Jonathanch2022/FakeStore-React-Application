@@ -35,10 +35,10 @@ class firestore {
             firestore.userAccount = auth.currentUser;
 
 
-            firestore.userCollection = await firestore.getUserDocs(table).then((e) => { return (e) });
+            firestore.userCollection = await firestore.getUserDocs(table);
 
 
-            firestore.userDoc = await firestore.getUserDoc(firestore.userAccount.email, firestore.userCollection).then((e) => { return (e) });
+            firestore.userDoc = await firestore.getUserDoc(firestore.userAccount.email, firestore.userCollection);
 
             return (firestore.userAccount);
 
@@ -57,7 +57,8 @@ class firestore {
             await addDoc(collection(database, table), {
                 uid: userCredential.user.uid,
                 email: email,
-                ...data,
+                ...data
+                
             });
             firestore.userAccount = userCredential;
             return { user: userCredential, success: true, message: "Signup Successful!" };
@@ -128,6 +129,22 @@ class firestore {
         const list = await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         return (list[0]);
 
+    }
+    static getOrders = async (table) => {
+
+        const data = await getDocs(collection(database, table));   
+        const list = await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        return ((!list[0]) ? null : list[0]);
+    }
+    static getUserOrders = async (table,userid) => {
+
+        const orders = await firestore.getOrders(table);
+        const userOrders = orders.data.data.filter((item) => item.uId == userid);
+        console.log(userOrders);
+
+        return (userOrders);
+
+       
     }
     static getUserDocs = async (table) => {
         try {
@@ -236,6 +253,64 @@ class firestore {
 
 
     }
+    static addOrder = async (table, order) => {
+
+        const orderDoc = await firestore.getOrders(table);
+        if (orderDoc == null) {
+            let dt = [];
+            dt.push({ ...order,uId:auth.currentUser.uid});
+
+            await addDoc(collection(database, table), {
+                data: dt
+
+
+            });
+           
+        }
+        else {
+
+            if (orderDoc.data) {
+
+              
+                const items = orderDoc.data;
+               
+
+                items.data.push({ ...order, uId: auth.currentUser.uid });
+              
+                await firestore.saveOrder(table, items);
+                console.log("Order Added");
+             
+
+            }
+        }
+     
+    }
+    static getOrderDocId = async (table) => {
+      
+        const idc = await firestore.getOrders(table);
+        return (idc.id);
+
+    }
+    static saveOrder = async (table, ordersList) => {
+
+        const docid = await firestore.getOrderDocId(table);
+
+        try {
+
+            updateDoc(doc(database, table, docid), {
+                data: ordersList
+
+            });
+          
+        }
+        catch (b) {
+            console.log(b);
+        }
+
+
+
+    }
+
     static saveProducts = async (table, updatedProductList) => {
 
         const docid = await firestore.getProductDocId(table);

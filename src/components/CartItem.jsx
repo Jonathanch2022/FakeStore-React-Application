@@ -28,9 +28,11 @@ export default function CartItem(props) {
 	}
 	useEffect(() => {
 
-		document.getElementById("qty" + props.id).value = props.quantity;
-		
-		setQty(props.quantity);
+		if (document.getElementById("qty" + props.id)) {
+			document.getElementById("qty" + props.id).value = props.quantity;
+
+			setQty(props.quantity);
+		}
 
 	}, [props.quantity]);
 	return (
@@ -52,14 +54,27 @@ export default function CartItem(props) {
 						<p data-cart="cart">
 							Price: {props.quantity} x ${parseFloat(props.price).toFixed(2)}
 						</p>
-						<div className="input-group mb-2" data-cart="cart">
-							<label className="input-group-text" htmlFor="quantity" data-cart="cart">Quantity</label>
-							<input type="number" className="form-control" id={"qty" + props.id} data-itemid={props.id} onBlur={(e) => { handleUpdateQty(e) }} onChange={(e) => {setQty(e.target.value) }} defaultValue={qty} data-cart="cart" data-total={total} />
-						</div>
+						
+							<div className="input-group mb-2" data-cart="cart">
+
+							{
+								(!props.cantEdit)?
+								<>
+									<label className="input-group-text" htmlFor="quantity" data-cart="cart">Quantity</label>
+
+									<input type="number" className="form-control" id={"qty" + props.id} data-itemid={props.id} onBlur={(e) => { handleUpdateQty(e) }} onChange={(e) => { setQty(e.target.value) }} defaultValue={qty} data-cart="cart" data-total={total} />
+								</> : null
+							}
+
+							</div>
+						
 
 					</div>
 					<div className="remove-cartitem" data-cart="cart">
-						<button id="remove-item" data-item={"item" + props.id} data-itemid={props.id} onClick={handleRemove} className="remove-item btn btn-danger" data-cart="cart">X</button>
+						{
+							(!props.cantEdit) ? <button id="remove-item" data-item={"item" + props.id} data-itemid={props.id} onClick={handleRemove} className={"remove-item btn btn-danger"} data-cart="cart" >X</button>: null
+						
+						}
 					</div>
 				</div>
 

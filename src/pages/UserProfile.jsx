@@ -13,13 +13,28 @@ export default function UserProfile() {
     const [state, setState] = useState();
     const [zip, setZip] = useState();
     const [country, setCountry] = useState();
+    const [phone, setPhone] = useState();
     const [user, setUser] = useState();
     const [userDocs, setUserDocs] = useState();
     const [userDoc, setUserDoc] = useState();
-    const handleSubmit = (e) => {
+    const [userOrders, setUserOrders] = useState();
+    const [colList, setColList] = useState();
+    const handleSubmit = async (e) => {
 
         e.preventDefault();
-        console.log("Form Submitted!");
+        const userData = {
+            name: e.target.userFirstName.value,
+            address: e.target.address.value,
+            city: e.target.city.value,
+            state: e.target.State.value,
+            zip: e.target.zip.value,
+            country: e.target.country.value,
+            phone: e.target.phone.value,
+     
+
+        }
+        await firestore.updateUserDocument(userData, "users");
+        console.log(userData);
     }
     useEffect(() => {
 
@@ -32,14 +47,23 @@ export default function UserProfile() {
         const col = await firestore.getUserDocs("users");
         if (col) {
             setUserDocs(col);
-            console.log(col);
+         
         }
         const Udoc = await firestore.getUserDoc(e, col);
         if (Udoc) {
 
             setUserDoc(Udoc);
             setFirstName(Udoc.name);
-            console.log(Udoc);
+            setEmail(Udoc.email);
+            setAddress(Udoc.address);
+            setCity(Udoc.city);
+            setState(Udoc.state);
+            setZip(Udoc.zip);
+            setCountry(Udoc.country);
+            setPhone(Udoc.phone);
+            const uOrders = await firestore.getUserOrders("orders", auth.currentUser.uid);
+            setUserOrders(uOrders);
+        
         }
         
 
@@ -53,16 +77,27 @@ export default function UserProfile() {
         }
 
     }, [user]);
+
+    useEffect(() => {
+        let itemList = [];
+        for (let t in userOrders) {
+            let cartlist = JSON.parse(userOrders[t].cart);
+            itemList.push(<CollapsContainer date={userOrders[t].orderdate} id={userOrders[t].id} total={"$" + userOrders[t].total} history={cartlist} />);
+        }
+        setColList(itemList);
+    }, [userOrders]);
     return (<>
 
         <Header />
-        <TitleHeader title="Welcome User" />
+        <TitleHeader title={"Welcome " + firstName} />
         <div class="formdiv">
             <form id="form1" onSubmit={handleSubmit} class="form2">
                 <label for="userFirstName">Full Name:</label>
                 <input type="text" name="userFirstName" onChange={(e) => { e.target.value }} defaultValue={firstName}></input>
                 <label for="userEmail">Email:</label>
                 <input type="email" name="userEmail" onChange={(e) => { e.target.value }} defaultValue={email}></input>
+                <label for="phone">Phone:</label>
+                <input type="text" name="phone" onChange={(e) => { e.target.value }} defaultValue={phone}></input>
                 <label for="address">Address:</label>
                 <input type="text" name="address" onChange={(e) => { e.target.value }} defaultValue={address}></input>
                 <label for="city">City:</label>
@@ -78,7 +113,15 @@ export default function UserProfile() {
             </form>
             <TitleHeader title="Order History" />
             <div class="orderHistory">
-                <CollapsContainer title="testing" />
+                {
+
+
+                    colList
+                  
+                    
+                    
+                }
+                
             </div>
 
         </div>

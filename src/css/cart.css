@@ -149,6 +149,10 @@
     font-weight:bolder;
     font-size:16px;
 }
+.disabled{
+
+    display:none;
+}
 @media(max-width:897px){
 
     .cart-container{

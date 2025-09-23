@@ -72,7 +72,7 @@ export class order {
 
         let newOrder = new order();
         console.log(data);
-        newOrder.name = data.firstName.value + " " + data.lastName.value;
+        newOrder.name = data.firstName.value;
         newOrder.address = data.address.value;
         newOrder.cardtype = data.paymentMethod.value;
         newOrder.orderdate = new Date().toLocaleDateString();

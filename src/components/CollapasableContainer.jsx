@@ -15,12 +15,15 @@ export default function CollapsContainer(props) {
             </div>
             <div className="collapseHeading">
                 {
-                    props.history
+                    props.history.map((item) => {
+
+                        
+                        return (
+                            <CartItem id={item.id} quantity={item.quantity} image={item.image} title={item.title} price={item.price} cantEdit={true} ></CartItem>
+                        )
+                    })
                 }
-                <CartItem></CartItem>
-                <CartItem></CartItem>
-                <CartItem></CartItem>
-               
+
             </div>
             <div id="h1containerbt">
                 <div id="headerbt">Total: {props.total}</div>

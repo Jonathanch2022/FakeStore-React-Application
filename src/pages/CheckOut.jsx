@@ -11,6 +11,8 @@ import sucessCheckout from "../assets/sucessCheckout.png"
 import { loadCart, setCart, updateCartStatus, tallyCart, resetCart } from "../state/slices/cartslice"
 import { useSelector, useDispatch } from "react-redux"
 import CartItem from "../components/CartItem"
+import { firestore } from "../components/firestore"
+import {auth } from "../firebaseConfig"
 export default function CheckOut() {
 
    
@@ -21,6 +23,18 @@ export default function CheckOut() {
     const dispatch = useDispatch();
     const shipping = 5;
     const tax = 8;
+    const [firstName, setFirstName] = useState();
+    const [email, setEmail] = useState();
+    const [address, setAddress] = useState();
+    const [city, setCity] = useState();
+    const [state, setState] = useState();
+    const [zip, setZip] = useState();
+    const [country, setCountry] = useState();
+    const [phone, setPhone] = useState();
+    const [user, setUser] = useState();
+    const [userDocs, setUserDocs] = useState();
+    const [userDoc, setUserDoc] = useState();
+
     const checkOutProperties = {
         shippingRate: 5,
         taxrate: 8,
@@ -41,12 +55,7 @@ export default function CheckOut() {
             setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "First name field cannot be empty", "All Fields are required!"));
         }
       
-        if (e.lastName.value === "") {
-
-          
-            valid = false;
-            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Last name field cannot be empty", "All Fields are required!"));
-        }
+      
        
         if (e.address.value === "") {
 
@@ -114,21 +123,50 @@ export default function CheckOut() {
             setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "CVV field cannot be empty", "All Fields are required!"));
 
         }
+        console.log(valid);
         return (valid);
     }
-    const handleCompleteOrder = (e) => {
+    const handleCompleteOrder = async (e) => {
         e.preventDefault();
-
-        if (!validateForm(e.target)) {
+       
+        if (validateForm(e.target)) {
             setShowAlert(AlertBox.showAlert(false, "Purchase Complete!", "Thank you, Your order has been successfully submitted!", "Order Complete", sucessCheckout));
             let orderData = order.createOrder(e.target);
             dispatch(resetCart());
-            console.log(orderData);
-            console.log(order.orderHistory);
+            await firestore.addOrder("orders",orderData);
+            
+            
         }
        
     }
+    const handleLoadUserData = async (e) => {
+
+        const Udocs = await firestore.getUserDocs("users");
+        const Udoc = await firestore.getUserDoc(e, Udocs);
+        setFirstName(Udoc.name);
+        setAddress(Udoc.address);
+        setCity(Udoc.city);
+        setState(Udoc.state);
+        setZip(Udoc.zip);
+        setCountry(Udoc.country);
+        setPhone(Udoc.phone);
     
+
+    }
+    useEffect(() => {
+
+        if (auth.currentUser) {
+
+            setUser(auth.currentUser);
+           
+        }
+        if (user) {
+
+            setEmail(user.email);
+            handleLoadUserData(user.email);
+            
+        }
+    }, [auth.currentUser, user]);
     return (
         <>
             <Header />
@@ -142,16 +180,15 @@ export default function CheckOut() {
                 <div className="cartBody2">
                 
                         <div>
-                            <TitleHeader title={"Shipping Details"} />
-                            <input id="firstName" type="text" placeholder="First Name"></input>
-                            <input id="lastName" type="text" placeholder="Last Name"></input>
-                            <input id="address" type="text" placeholder="Address"></input>
-                            <input id="city" type="text" placeholder="City"></input>
-                            <input id="state" type="text" placeholder="State"></input>
-                            <input id="zip" type="text" placeholder="Zip Code"></input>
-                            <input id="country" type="text" placeholder="Country"></input>
-                            <input id="email" type="email" placeholder="Email"></input>
-                            <input id="phone" type="tel" placeholder="Phone Number"></input>
+                        <TitleHeader title={"Shipping Details"} />
+                        <input id="firstName" type="text" onChange={(e) => { e.target.value }} defaultValue={firstName} placeholder="Full Name"></input>
+                        <input id="address" type="text" onChange={(e) => { e.target.value }} defaultValue={address} placeholder="Address"></input>
+                        <input id="city" type="text" onChange={(e) => { e.target.value }} defaultValue={city} placeholder="City"></input>
+                        <input id="state" type="text" onChange={(e) => { e.target.value }} defaultValue={state} placeholder="State"></input>
+                        <input id="zip" type="text" onChange={(e) => { e.target.value }} defaultValue={zip} placeholder="Zip Code"></input>
+                        <input id="country" type="text" onChange={(e) => { e.target.value }} defaultValue={country} placeholder="Country"></input>
+                        <input id="email" type="email" onChange={(e) => { e.target.value }} defaultValue={email} placeholder="Email"></input>
+                        <input id="phone" type="tel" onChange={(e) => { e.target.value }} defaultValue={ phone} placeholder="Phone Number"></input>
                         </div>
                         <div>
                             <TitleHeader title={"Payment Method"} />
