@@ -1,4 +1,4 @@
-import { useSearchParams} from 'react-router-dom'
+import { useSearchParams,useNavigate} from 'react-router-dom'
 import Header from "../components/Header.jsx"
 import "../css/common.css";
 import placeholder from "../assets/placeholder.png"
@@ -67,6 +67,7 @@ export default function EditProduct() {
    
     const [Alert, setAlert] = useState([]);
     const [productList, setProductList] = useState([]);
+    const navigate = useNavigate();
     //End of product cart function requirement 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -173,7 +174,7 @@ export default function EditProduct() {
                     firestore.saveProducts("products", updatedList);
 
                     setAlert(AlertBox.showAlert(false, "Product Has Been Deleted", "Item deleted successfully", "Product Deleted", Success));
-                    //navigate("/product-listing");
+                    navigate("/product-listing");
                 }
                 catch (e) { 
                  
