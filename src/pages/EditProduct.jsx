@@ -8,7 +8,9 @@ import { ProductItem } from "../components/Product.jsx"
 import { useMutation } from '@tanstack/react-query'
 import Success from "../assets/SuccessfulCheckmark.png"
 import { AlertBox } from "../components/Alert.jsx"
-import {firestore } from "../components/firestore.jsx"
+import { firestore } from "../components/firestore.jsx"
+import { auth } from "../firebaseConfig"
+
 async function deleteData(id) {
 
     let response = await fetch("https://fakestoreapi.com/products/" + id, {
@@ -237,7 +239,12 @@ export default function EditProduct() {
     }, [])
     
     return (
+
         <>
+
+            { 
+
+               (auth.currentUser)? <>
             <Header />
             {
                 Alert
@@ -283,6 +290,8 @@ export default function EditProduct() {
                     </div>
                 </div>
             </div>
+        </>: navigate("/login")
+            }
         </>
     )
 }

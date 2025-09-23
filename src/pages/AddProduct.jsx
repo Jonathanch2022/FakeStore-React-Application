@@ -6,7 +6,9 @@ import { useMutation } from '@tanstack/react-query'
 import {ProductItem} from "../components/Product.jsx" 
 import Success from "../assets/SuccessfulCheckmark.png"
 import { AlertBox } from "../components/Alert.jsx"
-import {firestore } from "../components/firestore.jsx"
+import { firestore } from "../components/firestore.jsx"
+import { auth } from "../firebaseConfig"
+import { useSearchParams, useNavigate } from 'react-router-dom'
 async function postData(data) {
 
     
@@ -74,7 +76,7 @@ const validateForm = (e) => {
 }
 export default function AddProduct() {
     let place = "Create Product Page";
-
+    const navigate = useNavigate();
     const {mutateAsync:AddPost } = useMutation({
         mutationFn: postData
        
@@ -114,43 +116,48 @@ export default function AddProduct() {
     }
     return (
         <>
-            <Header />
-            {
-                Alert
-            }
-            <div className="content-container">
-                <div className="editor-header">Create Product </div>
-                <div className="editor-fields-container">
+            { 
+                (auth.currentUser) ?
+                    <>
+                    <Header />
+                    {
+                        Alert
+                    }
+                    <div className="content-container">
+                        <div className="editor-header">Create Product </div>
+                        <div className="editor-fields-container">
                    
 
-                    <div className="editor-fields">
+                            <div className="editor-fields">
 
-                        <form id="product-form" onSubmit={handleSubmit}>
-                            <label>Product Name:</label>
-                            <input type="text" id="product_name" name="title" placeholder="Enter Product Name" />
-                            <div id="alert-product-name" className="alert-hidden">Product name must not be blank</div>
-                            <label>Product ID:</label>
-                            <input type="text" id="product_id" name="id" placeholder="Enter Product ID" />
-                            <div id="alert-product-id" className="alert-hidden">Please enter a vaild product id</div>
-                            <label>Product Image Url:</label>              
-                            <input type="text" name="product_image" disabled={false} onError={(e) => { console.log(e) }} id="product_image" />
-                            <div id="alert-product-image" className="alert-hidden">Product image must not be blank</div>
+                                <form id="product-form" onSubmit={handleSubmit}>
+                                    <label>Product Name:</label>
+                                    <input type="text" id="product_name" name="title" placeholder="Enter Product Name" />
+                                    <div id="alert-product-name" className="alert-hidden">Product name must not be blank</div>
+                                    <label>Product ID:</label>
+                                    <input type="text" id="product_id" name="id" placeholder="Enter Product ID" />
+                                    <div id="alert-product-id" className="alert-hidden">Please enter a vaild product id</div>
+                                    <label>Product Image Url:</label>              
+                                    <input type="text" name="product_image" disabled={false} onError={(e) => { console.log(e) }} id="product_image" />
+                                    <div id="alert-product-image" className="alert-hidden">Product image must not be blank</div>
                           
-                            <label htmlFor="product_price">Product Price:</label>
-                            <input type="text" name="product_price" id="product-price" placeholder="Enter Product Price" />
-                            <div id="alert-product-price" className="alert-hidden">Please enter a valid price</div>
-                            <label htmlFor="product_category">Product Category:</label>
-                            <input type="text"  name="category" id="product_category" placeholder="Enter Product Category" />
-                            <div id="alert-product-category" className="alert-hidden">Please enter a valid category</div>
-                            <label htmlFor="product-description">Product Description:</label>
-                            <textarea id="product_description" name="description" placeholder="Enter Product Description"></textarea>
-                            <div id="alert-product-description" className="alert-hidden">Please enter a valid product description</div>
-                            <Button type="submit" variant="primary" id="save-product">Create Product</Button>
-                            <input type="file" id="file-browser" className="file-browser" accept="image/*" onChange={handleBrowse}/>
-                        </form>
-                    </div>
-                </div>
-            </div>
+                                    <label htmlFor="product_price">Product Price:</label>
+                                    <input type="text" name="product_price" id="product-price" placeholder="Enter Product Price" />
+                                    <div id="alert-product-price" className="alert-hidden">Please enter a valid price</div>
+                                    <label htmlFor="product_category">Product Category:</label>
+                                    <input type="text"  name="category" id="product_category" placeholder="Enter Product Category" />
+                                    <div id="alert-product-category" className="alert-hidden">Please enter a valid category</div>
+                                    <label htmlFor="product-description">Product Description:</label>
+                                    <textarea id="product_description" name="description" placeholder="Enter Product Description"></textarea>
+                                    <div id="alert-product-description" className="alert-hidden">Please enter a valid product description</div>
+                                    <Button type="submit" variant="primary" id="save-product">Create Product</Button>
+                                    <input type="file" id="file-browser" className="file-browser" accept="image/*" onChange={handleBrowse}/>
+                                </form>
+                            </div>
+                        </div>
+                            </div>
+                </>:navigate("/login")
+            }
         </>
     )
 }
