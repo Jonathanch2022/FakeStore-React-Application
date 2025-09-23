@@ -5,6 +5,7 @@ import CollapsContainer from "../components/CollapasableContainer"
 import { useState, useEffect } from "react"
 import { auth } from "../firebaseConfig"
 import { firestore } from "../components/firestore"
+import { useNavigate} from "react-router-dom"
 export default function UserProfile() {
     const [firstName, setFirstName] = useState();
     const [email, setEmail] = useState();
@@ -19,6 +20,7 @@ export default function UserProfile() {
     const [userDoc, setUserDoc] = useState();
     const [userOrders, setUserOrders] = useState();
     const [colList, setColList] = useState();
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
 
         e.preventDefault();
@@ -34,22 +36,28 @@ export default function UserProfile() {
 
         }
         await firestore.updateUserDocument(userData, "users");
-        console.log(userData);
-    }
-    useEffect(() => {
-
-        setUser(auth.currentUser);
         
-       
+    }
+   
+    const handleDeleteAccount = async () => {
 
-    }, [auth.currentUser]);
+        await firestore.deleteAccount("users");
+        navigate("/product-listing");
+    }
+    const handleLogout = async () => {
+
+        await firestore.logOut();
+        navigate("/login");
+    }
     const handleLoadUser = async (e) => {
+
         const col = await firestore.getUserDocs("users");
         if (col) {
             setUserDocs(col);
          
         }
         const Udoc = await firestore.getUserDoc(e, col);
+       
         if (Udoc) {
 
             setUserDoc(Udoc);
@@ -70,6 +78,13 @@ export default function UserProfile() {
     }
     useEffect(() => {
 
+        setUser(auth.currentUser);
+        
+
+
+    }, [auth.currentUser]);
+    useEffect(() => {
+
         if (user) {
             setEmail(user.email);
             handleLoadUser(user.email);
@@ -79,47 +94,51 @@ export default function UserProfile() {
     }, [user]);
 
     useEffect(() => {
+
         let itemList = [];
         for (let t in userOrders) {
             let cartlist = JSON.parse(userOrders[t].cart);
-            itemList.push(<CollapsContainer date={userOrders[t].orderdate} id={userOrders[t].id} total={"$" + userOrders[t].total} history={cartlist} />);
+            itemList.push(<CollapsContainer key={userOrders[t].id } date={userOrders[t].orderdate} id={userOrders[t].id} total={"$" + userOrders[t].total} history={cartlist} />);
         }
         setColList(itemList);
+
     }, [userOrders]);
     return (<>
-
+      
         <Header />
         <TitleHeader title={"Welcome " + firstName} />
-        <div class="formdiv">
-            <form id="form1" onSubmit={handleSubmit} class="form2">
-                <label for="userFirstName">Full Name:</label>
+        <div className="formdiv">
+
+            <form id="form1" onSubmit={handleSubmit} className="form2">
+                <label htmlFor="userFirstName">Full Name:</label>
                 <input type="text" name="userFirstName" onChange={(e) => { e.target.value }} defaultValue={firstName}></input>
-                <label for="userEmail">Email:</label>
-                <input type="email" name="userEmail" onChange={(e) => { e.target.value }} defaultValue={email}></input>
-                <label for="phone">Phone:</label>
+                <label htmlFor="userEmail">Email:</label>
+                <input type="email" name="userEmail" onChange={(e) => { e.target.value }} defaultValue={email} disabled></input>
+                <label htmlFor="phone">Phone:</label>
                 <input type="text" name="phone" onChange={(e) => { e.target.value }} defaultValue={phone}></input>
-                <label for="address">Address:</label>
+                <label htmlFor="address">Address:</label>
                 <input type="text" name="address" onChange={(e) => { e.target.value }} defaultValue={address}></input>
-                <label for="city">City:</label>
+                <label htmlFor="city">City:</label>
                 <input type="text" name="city" onChange={(e) => { e.target.value }} defaultValue={city}></input>
-                <label for="state">State:</label>
+                <label htmlFor="state">State:</label>
                 <input type="text" name="State" onChange={(e) => { e.target.value }} defaultValue={state}></input>
-                <label for="zip">Zip:</label>
+                <label htmlFor="zip">Zip:</label>
                 <input type="text" name="zip" onChange={(e) => { e.target.value }} defaultValue={zip }></input>
-                <label for="country">Country:</label>
+                <label htmlFor="country">Country:</label>
                 <input type="text" name="country" onChange={(e) => { e.target.value }} defaultValue={country}></input>
-            <button type="submit">Save</button>
+                <button type="submit">Save</button>
+                <button type="button" onClick={handleDeleteAccount}>Delete Account</button>
+                <button type="button" onClick={handleLogout}>Logout</button>
+
+
 
             </form>
             <TitleHeader title="Order History" />
-            <div class="orderHistory">
+            <div className="orderHistory">
                 {
 
-
                     colList
-                  
-                    
-                    
+                                     
                 }
                 
             </div>

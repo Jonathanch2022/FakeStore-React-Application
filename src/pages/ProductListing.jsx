@@ -1,5 +1,5 @@
 import { useLocation, useSearchParams } from 'react-router-dom'
-import { useState, useEffect, useContext, createContext } from 'react'
+import { useEffect, useContext, createContext } from 'react'
 import Header from "../components/Header.jsx"
 import Product from "../components/Product.jsx"
 import { useQuery } from '@tanstack/react-query'
@@ -26,8 +26,8 @@ export async function getProduct(id) {
 export default function ProductListing() {
     
    
-    const [searchParams, setSearchParams] = useSearchParams();
-    const { search, setSearch, shopCatagory, setShopCatagory, products, setProducts } = useContext(productListingContext);
+    const [searchParams] = useSearchParams();
+    const { shopCatagory, products, setProducts } = useContext(productListingContext);
   
     const location = useLocation();
     
@@ -52,7 +52,7 @@ export default function ProductListing() {
         }
 
     }
-    const { data, isLoading, error } = useQuery({ queryKey: ['products'], queryFn: handleProductQuery });
+    const { data, isLoading } = useQuery({ queryKey: ['products'], queryFn: handleProductQuery });
 
    
     let handleGetData = async () => {
@@ -97,10 +97,7 @@ export default function ProductListing() {
             }
 
         }
-        else {
-
-            console.log("No Results found")
-        }
+       
 
 
     }

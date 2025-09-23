@@ -1,18 +1,16 @@
 import { Navbar, Nav, Container } from 'react-bootstrap'
-import {useNavigate, useLocation,useSearchParams} from "react-router-dom"
+import {useNavigate} from "react-router-dom"
 import cartIcon from "../assets/shoppingCart.png"
 import { Button } from 'react-bootstrap'
 import { createContext, useContext } from "react"
-import CatagoryOption from "../components/catagoryOption"
 import {productListingContext} from "../pages/ProductListing" 
-import { useEffect } from 'react'
 import Cart, {handleCartClick } from "../components/Cart"
-export default function Header(props) {
+export default function Header() {
 
     const navigate = useNavigate();
     const { options } = useContext(HeaderContext);
-    const {products,shopCatagory,setShopCatagory } = useContext(productListingContext); 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const {setShopCatagory } = useContext(productListingContext); 
+  
 
   
     const handleSearchSubmit = (e) => {
@@ -28,10 +26,7 @@ export default function Header(props) {
     let handleCategoryChange = (e) => {
         
         let selectedValue = e.target.value;
-        let urlString = "/product-listing?";
-        // window.location.href = "/product-listing?category=" + selectedValue;
-        let searchValue = document.getElementById("search-input").value;
-        
+        let urlString = "/product-listing?";    
         urlString += "category=" + encodeURIComponent(selectedValue);
         
         navigate(urlString);
@@ -67,6 +62,8 @@ export default function Header(props) {
                                 <Nav.Link href="/">Home</Nav.Link>
                                 <Nav.Link href="/product-listing">Shop</Nav.Link>
                                 <Nav.Link href="/add-product">Add Product</Nav.Link>
+                                <Nav.Link href="/profile">My Account</Nav.Link>
+                                <Nav.Link href="/login">Login</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                         <label id="catagoryLabel">Category:   

@@ -1,9 +1,8 @@
-
 import { useNavigate} from 'react-router-dom' 
 import Button from 'react-bootstrap/Button';
 import Header from "../components/Header.jsx"
 export default function Home() {
-    let place = "Home Page";
+   
    
     const navigate = useNavigate();
     let productid = -1;

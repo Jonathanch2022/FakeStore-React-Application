@@ -1,13 +1,11 @@
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useSearchParams} from 'react-router-dom'
 import Header from "../components/Header.jsx"
 import "../css/common.css";
 import placeholder from "../assets/placeholder.png"
 import Button from "react-bootstrap/Button"
-import { useEffect, useState, useContext } from 'react'
-import { CartContext } from "../components/Cart.jsx"
-import { getProduct } from "./ProductListing.jsx"
-import Product, { ProductItem } from "../components/Product.jsx"
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useEffect, useState} from 'react'
+import { ProductItem } from "../components/Product.jsx"
+import { useMutation } from '@tanstack/react-query'
 import Success from "../assets/SuccessfulCheckmark.png"
 import { AlertBox } from "../components/Alert.jsx"
 import {firestore } from "../components/firestore.jsx"
@@ -44,7 +42,7 @@ async function postData(datax) {
 }
 export default function EditProduct() {
    
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const id = searchParams.get("productid");
     const { mutateAsync: UpdateData } = useMutation({
 
@@ -55,7 +53,7 @@ export default function EditProduct() {
 
         mutationFn: deleteData
     })
-    const navigate = useNavigate();
+    
     const [product, setProduct] = useState({
 
             id: "",
@@ -66,7 +64,7 @@ export default function EditProduct() {
             image: ""
 
     });
-    const { handleRemove, updateQuantity} = useContext(CartContext);
+   
     const [Alert, setAlert] = useState([]);
     const [productList, setProductList] = useState([]);
     //End of product cart function requirement 

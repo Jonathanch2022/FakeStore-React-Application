@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Home  from "./pages/Home"
 import AddProduct  from "./pages/AddProduct" 
 import EditProduct  from "./pages/EditProduct"
@@ -15,10 +15,9 @@ import { CartContext} from "./components/Cart.jsx";
 import {useQuery} from "@tanstack/react-query"
 import CartItem from './components/CartItem'
 import CheckOut from './pages/CheckOut.jsx'
-import {updateItem,loadCart,removeItem,addToCart, setCart, updateCartStatus } from "./state/slices/cartslice"
+import {removeItem,addToCart } from "./state/slices/cartslice"
 import { useSelector, useDispatch } from 'react-redux'
 import { onAuthStateChanged, signOut } from "firebase/auth"
-import { firestore } from "./components/firestore"
 import UserProfile from "./pages/UserProfile"
 
 
@@ -46,20 +45,14 @@ export default function App() {
     const [search, setSearch] = useState("");
     const [shopCatagory, setShopCatagory] = useState("All");
     const [products, setProducts] = useState([]);
-    const { data, isLoading, error } = useQuery({ queryKey: ['categories'], queryFn: getCategories });
-    const [shoppingCart, setShoppingCart] = useState([]);
+    const { data, isLoading} = useQuery({ queryKey: ['categories'], queryFn: getCategories });
     const ItemsList = useSelector((state) => state.cartData.cartList);
     const dispatch = useDispatch();
     const [user, setUser] = useState(null);
 
     useEffect(() => {
 
-       // localStorage.setItem("cart-1", JSON.stringify([]));
-        if (isLoading) {
-
-            console.log("Loading...");
-        }
-        else {
+        if (!isLoading) {
 
             let list = data.map((cat) => {
 
@@ -80,9 +73,7 @@ export default function App() {
         return () => unSubscribe();
     }, [])
 
-    const handleLogOut = () => {
-        signOut(auth);
-    }
+  
     const updateCart = () => {
 
       
@@ -131,9 +122,9 @@ export default function App() {
 
       
         let qty = parseInt(e.target.getAttribute("data-qty"));
-        console.log(qty);
+       
         let itemData = JSON.parse(e.target.getAttribute("data-item"));
-        console.log(itemData);
+       
         const prd = {
             description: itemData.description,
             id: itemData.id,
@@ -170,14 +161,8 @@ export default function App() {
     const handleRemove = (e) => {
         
         let prdid = e.target.getAttribute("data-itemid");
-        
-        //CartData.cartList.delete(parseInt(prdid));
-        console.log(prdid);
         dispatch(removeItem(prdid));
-        //updateCartList();
-        //setCartItems(returnCartItems(CartData.cartList.values()));
        
-
     }
     return (
        

@@ -1,14 +1,11 @@
 import Header from "../components/Header"
 import "../css/checkout.css"
-import { useState, useContext, useEffect } from 'react'
-import { CartContext } from "../components/Cart"
-import placeholder from "../assets/placeholder.png"
+import { useState, useEffect } from 'react'
 import TitleHeader from "../components/TitleHeader"
-import Orders, { order } from "../components/Orders"
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom"
+import { order } from "../components/Orders"
 import { AlertBox } from "../components/Alert"
 import sucessCheckout from "../assets/sucessCheckout.png"
-import { loadCart, setCart, updateCartStatus, tallyCart, resetCart } from "../state/slices/cartslice"
+import { resetCart } from "../state/slices/cartslice"
 import { useSelector, useDispatch } from "react-redux"
 import CartItem from "../components/CartItem"
 import { firestore } from "../components/firestore"
@@ -123,7 +120,7 @@ export default function CheckOut() {
             setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "CVV field cannot be empty", "All Fields are required!"));
 
         }
-        console.log(valid);
+       
         return (valid);
     }
     const handleCompleteOrder = async (e) => {
@@ -133,7 +130,9 @@ export default function CheckOut() {
             setShowAlert(AlertBox.showAlert(false, "Purchase Complete!", "Thank you, Your order has been successfully submitted!", "Order Complete", sucessCheckout));
             let orderData = order.createOrder(e.target);
             dispatch(resetCart());
-            await firestore.addOrder("orders",orderData);
+            if (auth.currentUser) {
+                await firestore.addOrder("orders", orderData);
+            }
             
             
         }
@@ -154,7 +153,7 @@ export default function CheckOut() {
 
     }
     useEffect(() => {
-
+       
         if (auth.currentUser) {
 
             setUser(auth.currentUser);

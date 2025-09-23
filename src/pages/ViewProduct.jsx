@@ -1,24 +1,22 @@
 import { useNavigate,useSearchParams } from 'react-router-dom'
 import Header from "../components/Header.jsx"
-import { useEffect, useState, useContext, useRef } from 'react'
+import { useState, useContext } from 'react'
 import { CartContext } from "../components/Cart.jsx"
 import Rating from "../components/RateStar.jsx"
-import { useQuery,useMutation } from '@tanstack/react-query'
-import { getProduct } from "./ProductListing.jsx"
-import { useSelector, useDispatch } from 'react-redux'
+import { useQuery} from '@tanstack/react-query'
 import { firestore } from "../components/firestore.jsx";
 export default function ProductDetails() {
 
 
     
-    let place = "Product Details Page";
-    const [searchParams, setSearchParams] = useSearchParams();
+  
+    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState([]);
     const [rating, setRating] = useState(0);
     const [rateCount, setRatingCount] = useState(0);
     const [qty, setQty] = useState(0);
-    const { updateQuantity, handleRemove, handleAddToCart, updateCartList, cartItems, setCartItems, returnCartItems } = useContext(CartContext);
+    const {handleAddToCart} = useContext(CartContext);
     /*
     const { mutateAsync: getData, isLoading } = useMutation({
         mutationFn: handleGetData
@@ -41,7 +39,7 @@ export default function ProductDetails() {
         return (item);
     }
 
-    const {isLoading } = useQuery({ queryKey: ['productItem'], queryFn: handleGetData});
+    useQuery({ queryKey: ['productItem'], queryFn: handleGetData});
 
    
     const handleEdit = () => {

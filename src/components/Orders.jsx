@@ -1,14 +1,22 @@
 import "../css/orders.css"
 import TitleHeader from "./TitleHeader";
+import { firestore } from "./firestore";
 export class order {
 
     static orderHistory = [];
     static instanceid = 0;
-    constructor() {
+    constructor () {
 
-        
-        order.instanceid++;
-        this.id = order.instanceid;
+        const count = order.getLastOrdersId().then((a) => {
+
+          
+            order.instanceid = parseInt(a);
+            order.instanceid++;
+            this.id = order.instanceid;
+           
+        });
+       
+       
     }
     id;
     name;
@@ -29,7 +37,19 @@ export class order {
     shipping = 0;
     tax = 0;
     subtotal = 0;
+    static async getLastOrdersId() {
 
+        const ordersList = await firestore.getOrders("orders");
+       
+        if (ordersList) {
+            let count = ordersList.data.length;
+            order.instanceid = count;
+            return (count);
+        }
+        else {
+            return (0);
+        }
+    }
     static loadOrderHistory() {
 
       let storedOrders = localStorage.getItem("order-history");
@@ -71,7 +91,6 @@ export class order {
 
 
         let newOrder = new order();
-        console.log(data);
         newOrder.name = data.firstName.value;
         newOrder.address = data.address.value;
         newOrder.cardtype = data.paymentMethod.value;

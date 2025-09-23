@@ -3,14 +3,14 @@ import { firestore } from "../components/firestore"
 import "../css/login.css"
 import Header from "../components/Header"
 import TitleHeader from "../components/TitleHeader"
-import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 export default function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [msg, setMsg] = useState("");
     const [user, setUser] = useState(null);
-
+    const navigate = useNavigate();
     const handlelogin = async (e) => {
         e.preventDefault();
 
@@ -18,6 +18,7 @@ export default function Login() {
            
        
             await firestore.logIn(email, password);
+            navigate("/profile");
             
         }
         catch (e) {
@@ -25,42 +26,21 @@ export default function Login() {
             setMsg(e.message);
         }
     };
-    const handleUpdate = () => {
-      
-        
-                
-                const data = {
-                    name: "update6"
-                }
-                firestore.updateUserDocument(data,"users");
-             
-
-       
-    }
-    const handleDeleteUserDoc = () => {
-
-        firestore.deleteUserDoc(firestore.userAccount.email, "users");
-    }
-    const handleLogOut = () => {
+  
+   
+    const handleLogOut = async () => {
 
        
             
-            firestore.logOut();
-            setMsg("Signed out successfully");
+           await firestore.logOut();
+          
        
     }
-    const handleDeleteAccount = () => {
 
-        firestore.deleteAccount("users");
+    const handleSignUp = () => {
+
+        navigate("/signup");
     }
-    useEffect(() => {
-
-        firestore.getUsers().then((e) => {
-
-            console.log(e);
-        });
-
-    }, [])
     
     return (<>
 
@@ -75,9 +55,7 @@ export default function Login() {
                 <input type="password" id="password" onChange={(e) => { setPassword(e.target.value) }}></input>
                 <button type="submit">Login</button>
                 <button type="button" onClick={handleLogOut}>Logout</button>
-                <button type="button" onClick={handleUpdate}>update</button>
-                <button type="button" onClick={handleDeleteUserDoc}>delete</button>
-                <button type="button" onClick={handleDeleteAccount}>delete account</button>
+                <button type="button" onClick={handleSignUp}>Signup</button>
             </form>
            
         </div>

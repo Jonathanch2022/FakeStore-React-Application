@@ -1,4 +1,3 @@
-import TitleHeader from "../components/TitleHeader"
 import "../css/collapseContainer.css"
 import CartItem from "./CartItem"
 export default function CollapsContainer(props) {
@@ -22,7 +21,7 @@ export default function CollapsContainer(props) {
 
                         
                                 return (
-                                    <CartItem id={item.id} quantity={item.quantity} image={item.image} title={item.title} price={item.price} cantEdit={true} ></CartItem>
+                                    <CartItem key={item.id } id={item.id} quantity={item.quantity} image={item.image} title={item.title} price={item.price} cantEdit={true} ></CartItem>
                                 )
                             })
                         }

@@ -1,10 +1,8 @@
 ﻿import { createUserWithEmailAndPassword } from "firebase/auth"
 import { auth, database } from "../firebaseConfig"
 import { collection, addDoc, getDocs, deleteDoc, doc,updateDoc } from "firebase/firestore"
-import { useState } from "react"
-import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth"
-import ProductListing from "../pages/ProductListing"
-import { updateItem } from "../state/slices/cartslice"
+import { signInWithEmailAndPassword, signOut} from "firebase/auth"
+
 
 class firestore {
 
@@ -72,8 +70,8 @@ class firestore {
 
       
         
-          
-            user.delete();
+
+        user.delete();
             console.log("Account Deleted");
     
     }
@@ -116,7 +114,7 @@ class firestore {
         }
     }
     static uploadProducts = async (table, Productlist) => {
-        console.log(Productlist);
+       
         const docid = await addDoc(collection(database, table), {
             data: Productlist
         });
@@ -124,7 +122,7 @@ class firestore {
     }
     static getProducts = async (table) =>{
 
-        console.log("loading data");
+      
         const data = await getDocs(collection(database, table));
         const list = await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         return (list[0]);
@@ -139,8 +137,8 @@ class firestore {
     static getUserOrders = async (table,userid) => {
 
         const orders = await firestore.getOrders(table);
-        const userOrders = orders.data.data.filter((item) => item.uId == userid);
-        console.log(userOrders);
+        const userOrders = orders.data.filter((item) => item.uId == userid);
+        
 
         return (userOrders);
 
@@ -275,7 +273,7 @@ class firestore {
                 const items = orderDoc.data;
                
 
-                items.data.push({ ...order, uId: auth.currentUser.uid });
+                items.push({ ...order, uId: auth.currentUser.uid });
               
                 await firestore.saveOrder(table, items);
                 console.log("Order Added");

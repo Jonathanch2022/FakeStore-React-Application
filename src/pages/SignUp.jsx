@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react"
-import { auth, database } from "../firebaseConfig"
-import {collection,addDoc,getDocs,deleteDoc,doc } from "firebase/firestore"
 import "../css/signup.css"
 import Header from "../components/Header"
 import TitleHeader from "../components/TitleHeader"
@@ -18,16 +16,13 @@ export default function SignUp() {
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-        let em = e.target.email.value;
-        let ps = e.target.password.value;
-        let cps = e.target.comfirmpassword.value;
-     
-        if (ps == cps) {
+
+        if (e.target.password.value == e.target.comfirmpassword.value) {
             
             try {
 
                 const uid = await firestore.createAccount(email, password, {
-                    name: "",
+                    name: e.target.name.value,
                     address: '',
                     city: "",
                     state: "",
@@ -41,7 +36,7 @@ export default function SignUp() {
 
                     setUser(uid.user);
                 }
-
+                console.log("Account Created");
             }
             catch (e) {
 
@@ -54,34 +49,13 @@ export default function SignUp() {
             
         }
     };
-  
    
-    const updateDocument = async (id,updatedDoc) => {
-
-        try {
-            await collection("users").doc(id).update(updatedDoc);
-            const doc = await collection("users").doc(id).get();
-            console.log(doc);
-        }
-        catch (e) {
-
-
-        }
-    }
-    useEffect(() => {
-
-        console.log(msg);
-
-    }, [msg])
     useEffect(() => {
 
         firestore.getUserDocs("users").then((e) => {
             setUserDocCollection(e);      
         });
-        if (userDoc) { 
-
-            console.log(userDoc.id);
-        }
+       
         
     }, [userDoc]);
     return (<>
@@ -99,8 +73,8 @@ export default function SignUp() {
                 <label htmlFor="comfirmpassword">Comfirm Password:</label>
                 <input type="password" id="comfirmpassword"></input>
                 <button type="submit">Submit</button>
-                <button type="button" onClick={(e) => { firestore.deleteUserDoc}}>Delete</button>
-                <button type="button" onClick={(e) => { }}>Update</button>
+                
+              
 
             </form>
 

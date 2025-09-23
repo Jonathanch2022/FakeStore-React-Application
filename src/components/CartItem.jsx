@@ -1,10 +1,9 @@
 import "../css/cart.css"
 import { useState, useContext, useEffect } from "react"
 import { CartContext} from '../components/Cart' 
-import { productListingContext } from "../pages/ProductListing";
-import { updateItem, loadCart, removeItem, addToCart, setCart } from "../state/slices/cartslice"
-import { useSelector, useDispatch } from 'react-redux'
-import { useFormState } from "react-dom";
+import { updateItem} from "../state/slices/cartslice"
+import { useDispatch } from 'react-redux'
+
 
 export default function CartItem(props) {
 	const { handleRemove, updateCartItem } = useContext(CartContext);

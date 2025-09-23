@@ -1,10 +1,8 @@
-import {useSearchParams } from 'react-router-dom'
 import Header from "../components/Header.jsx"
 import "../css/common.css";
 import Button from "react-bootstrap/Button"
-import { CartContext } from "../components/Cart.jsx"
-import { useState, useContext } from 'react'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useState} from 'react'
+import { useMutation } from '@tanstack/react-query'
 import {ProductItem} from "../components/Product.jsx" 
 import Success from "../assets/SuccessfulCheckmark.png"
 import { AlertBox } from "../components/Alert.jsx"
