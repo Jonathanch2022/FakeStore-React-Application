@@ -14,7 +14,7 @@ async function postData(data) {
     
     const prd = new ProductItem(data.product_id.value, data.product_name.value, data.product_price.value, data.product_description.value, data.product_category.value, data.product_image.value);
     //let jsonData = JSON.stringify(prd);
-    firestore.addProduct("products", prd);
+    await firestore.addProduct("products", prd);
    
     return ("Success");
 
@@ -90,8 +90,8 @@ export default function AddProduct() {
         if (validateForm(e.target)) {
 
             AddPost(e.target).then((a) => {
-
-                if (a.status == 200) {
+                
+                if (a == "Success") {
 
                     setAlert(AlertBox.showAlert(false, "Product Created", "Product Created Successfully", "Product Created", Success));
                 }
