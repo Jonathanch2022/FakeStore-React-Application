@@ -10,7 +10,7 @@ import { auth } from "./firebaseConfig"
 import ProductListing, {productListingContext } from "./pages/ProductListing"
 import { HeaderContext } from "./components/Header.jsx"
 import CategoryOption, { OptionsCategory } from "./components/catagoryOption.jsx"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { CartContext} from "./components/Cart.jsx";
 import {useQuery} from "@tanstack/react-query"
 import CartItem from './components/CartItem'
@@ -19,9 +19,27 @@ import {removeItem,addToCart } from "./state/slices/cartslice"
 import { useSelector, useDispatch } from 'react-redux'
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import UserProfile from "./pages/UserProfile"
+import { firestore } from "./components/firestore"
 
 
+async function getFireStoreCatagories() {
 
+    let cat = await firestore.getCatagories("categories");
+    
+
+    if (!cat) {
+        const catlist = await getCategories();
+        const list = await firestore.addCatagories(catlist, "categories");
+        return (list);
+
+    }
+    else {
+       
+        return (cat.cat);
+    }
+   
+    
+}
 async function getCategories() {
 
     
@@ -45,10 +63,12 @@ export default function App() {
     const [search, setSearch] = useState("");
     const [shopCatagory, setShopCatagory] = useState("All");
     const [products, setProducts] = useState([]);
-    const { data, isLoading} = useQuery({ queryKey: ['categories'], queryFn: getCategories });
+    const { data, isLoading } = useQuery({ queryKey: ['categories'], queryFn: getFireStoreCatagories});
     const ItemsList = useSelector((state) => state.cartData.cartList);
     const dispatch = useDispatch();
     const [user, setUser] = useState(null);
+   
+   
 
     useEffect(() => {
 
@@ -185,7 +205,8 @@ export default function App() {
                             </Router>
                         </HeaderContext.Provider>
                     </productListingContext.Provider>
-                </CartContext.Provider>
+            </CartContext.Provider>
+     
             
         
 

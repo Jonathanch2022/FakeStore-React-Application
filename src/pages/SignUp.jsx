@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import "../css/signup.css"
 import Header from "../components/Header"
 import TitleHeader from "../components/TitleHeader"
-import {firestore } from "../components/firestore"
+import { firestore } from "../components/firestore"
+import { useNavigate } from "react-router-dom"
 export default function SignUp() {
 
     const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ export default function SignUp() {
     const [userDocCollection, setUserDocCollection] = useState(null);
     const [userDoc, setUserDoc] = useState(null);
     const [user, setUser] = useState(null);
-    
+    const navigate = useNavigate();
 
     const handleSignUp = async (e) => {
         e.preventDefault();
@@ -37,6 +38,7 @@ export default function SignUp() {
                     setUser(uid.user);
                 }
                 console.log("Account Created");
+                navigate("/profile");
             }
             catch (e) {
 

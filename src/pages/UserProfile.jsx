@@ -43,9 +43,13 @@ export default function UserProfile() {
     }
 
     const handleDeleteAccount = async () => {
-
+       
         await firestore.deleteAccount("users");
-        navigate("/product-listing");
+        firestore.logOut();
+        navigate("/login?delete=true");
+        
+        
+        
     }
     const handleLogout = async () => {
 

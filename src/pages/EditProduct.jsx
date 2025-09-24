@@ -256,7 +256,6 @@ export default function EditProduct() {
 
         <>
 
-        
             <Header />
             {
                 Alert

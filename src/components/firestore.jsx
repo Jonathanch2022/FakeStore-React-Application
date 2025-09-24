@@ -66,6 +66,46 @@ class firestore {
             return { success: false, message: e.message };
         }
     }
+    static async getCatagories(table) {
+
+        const data = await getDocs(collection(database, table));
+        
+        const list = await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        return (list[0]);
+
+    }
+    static addCatagories = async (data, table) => {
+        try {
+
+            const cat = await this.getCatagories(table);
+           
+            // Save extra user data to Firestore
+            if (!cat) {
+
+                await addDoc(collection(database, table), {
+                    cat: data
+
+
+                });
+            }
+            else {
+                
+                updateDoc(doc(database, table, cat.id), {
+                    cat: [...cat.cat, ...data]
+
+                });
+            }
+            return (cat.cat);
+
+        } catch (e) {
+            console.error("Error creating category:", e.message);
+            return { success: false, message: e.message };
+        }
+    }
+    static async catagorieExist(table, cat) {
+        const catagories = await firestore.getCatagories(table);
+        return ((catagories.cat.filter((item) => item.toUpperCase() == cat.toUpperCase()).length > 0) ? true : false);
+    }
     static deleteUser(user) {
 
       
@@ -75,8 +115,8 @@ class firestore {
             console.log("Account Deleted");
     
     }
-    static logIn = async (email,password) => {
-       
+    static logIn = async (email, password) => {
+      
         try {
 
             const user = await signInWithEmailAndPassword(auth, email, password);
@@ -187,7 +227,7 @@ class firestore {
         }
     }
     static deleteAccount = async (table) => {
-      
+        
         if (await firestore.getUsers(table)) {
           
             if (firestore.userDoc) {
@@ -352,3 +392,5 @@ class firestore {
     
 }
 export { firestore };
+
+
