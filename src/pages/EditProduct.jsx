@@ -75,8 +75,9 @@ export default function EditProduct() {
     //End of product cart function requirement 
     const handleSubmit = (e) => {
         e.preventDefault();
+        let item = e.target;
         if (validateForm(e.target)) {
-            let item = e.target;
+            
             let prd = new ProductItem(item.product_id.value, item.product_name.value, item.product_price.value, item.product_description.value, item.product_category.value, item.product_image.value);
             let pr = productList.map((it) => {
 
@@ -98,11 +99,11 @@ export default function EditProduct() {
             try {
 
                 firestore.saveProducts("products", pr);
-                setAlert(AlertBox.showAlert(false, "Product Updated", "Item updated successfully", "Product Updated", Success));
+                setAlert(AlertBox.showAlert(false, "Product Updated", "Item updated successfully", "Product Updated", Success, "/view-product?productid=" + item.product_id.value));
             }
             catch (e) {
 
-                setAlert(AlertBox.showAlert(false, "Update Error", "Product could not be updated", "Error updating product"));
+                setAlert(AlertBox.showAlert(false, "Update Error", "Product could not be updated", "Error updating product",null));
             }
                      
        
@@ -177,12 +178,12 @@ export default function EditProduct() {
                 try {
                     firestore.saveProducts("products", updatedList);
 
-                    setAlert(AlertBox.showAlert(false, "Product Has Been Deleted", "Item deleted successfully", "Product Deleted", Success));
-                    navigate("/product-listing");
+                    setAlert(AlertBox.showAlert(false, "Product Has Been Deleted", "Item deleted successfully", "Product Deleted", Success, "/product-listing"));
+                  
                 }
                 catch (e) { 
                  
-                    setAlert(AlertBox.showAlert(false, "Delete Error", "Product could not be deleted", "Error deleting product"));
+                    setAlert(AlertBox.showAlert(false, "Delete Error", "Product could not be deleted", "Error deleting product",null));
                 }
                
               

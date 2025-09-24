@@ -7,7 +7,8 @@ import { auth } from "../firebaseConfig"
 import { onAuthStateChanged } from "firebase/auth"
 import { firestore } from "../components/firestore"
 import { useNavigate } from "react-router-dom"
-
+import Alert, { AlertBox } from "../components/Alert"
+import Success from "../assets/SuccessfulCheckmark.png"
 export default function UserProfile() {
     const [firstName, setFirstName] = useState();
     const [email, setEmail] = useState();
@@ -23,7 +24,7 @@ export default function UserProfile() {
     const [userOrders, setUserOrders] = useState();
     const [colList, setColList] = useState();
     const navigate = useNavigate();
-    const [nav, setNav] = useState(false);
+    const [alert, setAlert] = useState(false);
     const handleSubmit = async (e) => {
 
         e.preventDefault();
@@ -39,7 +40,7 @@ export default function UserProfile() {
 
         }
         await firestore.updateUserDocument(userData, "users");
-
+        setAlert(AlertBox.showAlert(false, "Profile Updated", "Profile has been updated successfully", "Profile Updated", Success, null));
     }
 
     const handleDeleteAccount = async () => {
@@ -128,7 +129,10 @@ export default function UserProfile() {
         
         <>
              
-                    <Header />
+            <Header />
+            {
+                alert
+            }
                     <TitleHeader title={"Welcome " + firstName} />
                     <div className="formdiv">
 

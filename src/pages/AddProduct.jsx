@@ -101,11 +101,11 @@ export default function AddProduct() {
                 
                 if (a == "Success") {
 
-                    setAlert(AlertBox.showAlert(false, "Product Created", "Product Created Successfully", "Product Created", Success));
+                    setAlert(AlertBox.showAlert(false, "Product Created", "Product Created Successfully", "Product Created", Success,"/product-listing"));
                 }
                 else {
 
-                    setAlert(AlertBox.showAlert(false, "Unsuccessful product creation", "Product coult not be created at this time", "Error Creating Product"));
+                    setAlert(AlertBox.showAlert(false, "Unsuccessful product creation", "Product coult not be created at this time", "Error Creating Product",null));
                 }
 
             });

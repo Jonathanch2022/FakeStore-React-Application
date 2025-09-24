@@ -49,7 +49,7 @@ export default function CheckOut() {
 
            
             valid = false;
-            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "First name field cannot be empty", "All Fields are required!"));
+            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "First name field cannot be empty", "All Fields are required!",null));
         }
       
       
@@ -58,34 +58,34 @@ export default function CheckOut() {
 
            
             valid = false;
-            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Address field cannot be empty", "All Fields are required!"));
+            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Address field cannot be empty", "All Fields are required!",null));
         }
       
         if (e.city.value === "") {
 
          
             valid = false;
-            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "City field cannot be empty", "All Fields are required!"));
+            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "City field cannot be empty", "All Fields are required!",null));
         }
        
         if (e.state.value === "") {
 
             
             valid = false;
-            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "State field cannot be empty", "All Fields are required!"));
+            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "State field cannot be empty", "All Fields are required!",null));
         }
         if (e.zip.value === "") {
 
            
             valid = false;
-            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Zipcode field cannot be empty", "All Fields are required!"));
+            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Zipcode field cannot be empty", "All Fields are required!",null));
         }
       
         if (e.country.value === "") {
 
             
             valid = false;
-            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Country field cannot be empty", "All Fields are required!"));
+            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Country field cannot be empty", "All Fields are required!",null));
 
         }
        
@@ -93,7 +93,7 @@ export default function CheckOut() {
 
          
             valid = false;
-            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Email field cannot be empty", "All Fields are required!"));
+            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Email field cannot be empty", "All Fields are required!",null));
 
         }
       
@@ -101,23 +101,23 @@ export default function CheckOut() {
 
           
             valid = false;
-            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Phone number field cannot be empty", "All Fields are required!"));
+            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Phone number field cannot be empty", "All Fields are required!",null));
 
         }
         if (e.cardNumber.value === "") {
             valid = false;
-            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Card number field cannot be empty", "All Fields are required!"));
+            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Card number field cannot be empty", "All Fields are required!",null));
 
         }
         if (e.expirationDate.value === "") {
             valid = false;
-            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Expiration date field cannot be empty", "All Fields are required!"));
+            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "Expiration date field cannot be empty", "All Fields are required!",null));
 
         }
         if (e.cvv.value === "") {
 
             valid = false;
-            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "CVV field cannot be empty", "All Fields are required!"));
+            setShowAlert(AlertBox.showAlert(false, "Form Validation Error", "CVV field cannot be empty", "All Fields are required!",null));
 
         }
        
@@ -127,7 +127,7 @@ export default function CheckOut() {
         e.preventDefault();
        
         if (validateForm(e.target)) {
-            setShowAlert(AlertBox.showAlert(false, "Purchase Complete!", "Thank you, Your order has been successfully submitted!", "Order Complete", sucessCheckout));
+            setShowAlert(AlertBox.showAlert(false, "Purchase Complete!", "Thank you, Your order has been successfully submitted!", "Order Complete", sucessCheckout,"/profile"));
             let orderData = order.createOrder(e.target);
             dispatch(resetCart());
             if (auth.currentUser) {
