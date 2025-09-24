@@ -1,7 +1,7 @@
 import Header from "../components/Header.jsx"
 import "../css/common.css";
 import Button from "react-bootstrap/Button"
-import { useState} from 'react'
+import { useState,useEffect} from 'react'
 import { useMutation } from '@tanstack/react-query'
 import {ProductItem} from "../components/Product.jsx" 
 import Success from "../assets/SuccessfulCheckmark.png"
@@ -9,6 +9,7 @@ import { AlertBox } from "../components/Alert.jsx"
 import { firestore } from "../components/firestore.jsx"
 import { auth } from "../firebaseConfig"
 import { useSearchParams, useNavigate } from 'react-router-dom'
+import { onAuthStateChanged } from "firebase/auth"
 async function postData(data) {
 
     
@@ -77,6 +78,7 @@ const validateForm = (e) => {
 export default function AddProduct() {
     let place = "Create Product Page";
     const navigate = useNavigate();
+    const [user, setUser] = useState();
     const {mutateAsync:AddPost } = useMutation({
         mutationFn: postData
        
@@ -114,11 +116,26 @@ export default function AddProduct() {
         
         
     }
+    useEffect(() => {
+
+        const usb = onAuthStateChanged(auth, (user) => {
+            if (user) {
+
+                setUser(user);
+            }
+            else {
+                navigate("/login");
+            }
+        })
+
+
+   
+
+    },[])
     return (
         <>
-            { 
-                (auth.currentUser) ?
-                    <>
+          
+               
                     <Header />
                     {
                         Alert
@@ -156,8 +173,7 @@ export default function AddProduct() {
                             </div>
                         </div>
                             </div>
-                </>:navigate("/login")
-            }
+               
         </>
     )
 }

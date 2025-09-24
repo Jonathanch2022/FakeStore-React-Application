@@ -4,8 +4,10 @@ import "../css/profile.css"
 import CollapsContainer from "../components/CollapasableContainer"
 import { useState, useEffect } from "react"
 import { auth } from "../firebaseConfig"
+import { onAuthStateChanged } from "firebase/auth"
 import { firestore } from "../components/firestore"
-import { useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+
 export default function UserProfile() {
     const [firstName, setFirstName] = useState();
     const [email, setEmail] = useState();
@@ -21,6 +23,7 @@ export default function UserProfile() {
     const [userOrders, setUserOrders] = useState();
     const [colList, setColList] = useState();
     const navigate = useNavigate();
+    const [nav, setNav] = useState(false);
     const handleSubmit = async (e) => {
 
         e.preventDefault();
@@ -77,12 +80,26 @@ export default function UserProfile() {
 
     }
     useEffect(() => {
+       
+        
+        
 
-        setUser(auth.currentUser);
+    }, [])
+    useEffect(() => {
+
+        
+        const usb = onAuthStateChanged(auth, (user) => {
+            if (user) {
+
+                setUser(user);
+            }
+            else {
+                navigate("/login");
+            }
+        })
 
 
-
-    }, [auth.currentUser]);
+    }, []);
     useEffect(() => {
 
         if (user) {
@@ -106,9 +123,7 @@ export default function UserProfile() {
     return (
         
         <>
-            {
-                (auth.currentUser) ?
-                <>
+             
                     <Header />
                     <TitleHeader title={"Welcome " + firstName} />
                     <div className="formdiv">
@@ -148,8 +163,8 @@ export default function UserProfile() {
                         </div>
 
                         </div>
-                    </> : navigate("/login")
-            }
+                    
+            
         </>
         
 

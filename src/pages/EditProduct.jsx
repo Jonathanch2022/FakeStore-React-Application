@@ -10,6 +10,7 @@ import Success from "../assets/SuccessfulCheckmark.png"
 import { AlertBox } from "../components/Alert.jsx"
 import { firestore } from "../components/firestore.jsx"
 import { auth } from "../firebaseConfig"
+import { onAuthStateChanged } from "firebase/auth"
 
 async function deleteData(id) {
 
@@ -69,6 +70,7 @@ export default function EditProduct() {
    
     const [Alert, setAlert] = useState([]);
     const [productList, setProductList] = useState([]);
+    const [user, setUser] = useState();
     const navigate = useNavigate();
     //End of product cart function requirement 
     const handleSubmit = (e) => {
@@ -207,6 +209,18 @@ export default function EditProduct() {
     }
     useEffect(() => {
 
+        const usb = onAuthStateChanged(auth, (user) => {
+            if (user) {
+
+                setUser(user);
+            }
+            else {
+                navigate("/login");
+            }
+        })
+    }, []);
+    useEffect(() => {
+
        
         let id = searchParams.get("productid");
 
@@ -242,9 +256,7 @@ export default function EditProduct() {
 
         <>
 
-            { 
-
-               (auth.currentUser)? <>
+        
             <Header />
             {
                 Alert
@@ -290,8 +302,7 @@ export default function EditProduct() {
                     </div>
                 </div>
             </div>
-        </>: navigate("/login")
-            }
+      
         </>
     )
 }
