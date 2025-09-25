@@ -9,6 +9,7 @@
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include=".github\" />
     <Folder Include="src\state\slices\" />
   </ItemGroup>
 </Project>
