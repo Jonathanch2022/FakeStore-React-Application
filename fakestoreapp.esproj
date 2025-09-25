@@ -9,7 +9,9 @@
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include=".github\" />
     <Folder Include="src\state\slices\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".github\workflows\ci.yml" />
   </ItemGroup>
 </Project>
