@@ -95,7 +95,7 @@ export const counterSlice = createSlice({
         loadCart: (state, action) => {
 
             const DataCart = localStorage.getItem("cart-1");
-            const items = JSON.parse(DataCart);
+            const items = (DataCart) ? JSON.parse(DataCart) : [];
             state.cartList = items;
            
 
