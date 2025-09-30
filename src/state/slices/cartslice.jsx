@@ -40,7 +40,8 @@ export const counterSlice = createSlice({
                     }
                 }
                 if (!exist) {
-                   
+
+                    (state.cartList) ? state.cartList : [];
                     state.cartList.push(action.payload);
                     for (let t in state.cartList) {
 
