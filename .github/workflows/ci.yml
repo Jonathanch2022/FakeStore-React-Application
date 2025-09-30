@@ -1,35 +1,53 @@
-name: CI Pipeline
+name: CI & Deploy
 
-# Run the workflow on pushes and pull requests
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [main, master]
   pull_request:
-    branches:
-      - main
-      - master
+    branches: [main, master]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Checkout the repository code
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18' # Use a Node.js version compatible with your React app
+          node-version: 18
+          cache: npm
 
-      # Step 3: Install dependencies
-      - name: Install dependencies
-        run: npm install
+      - name: Install deps
+        run: npm ci
 
-      # Step 4: Run tests
       - name: Run tests
-        run: npm test -- --watchAll=false
+        run: npm test -- --ci --watchAll=false
+
+  deploy:
+    needs: test               # <- only runs if "test" job succeeds
+    if: ${{ success() }}      # <- extra guard (redundant but explicit)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      # Example: Vercel deployment via CLI (replace with your method)
+      - name: Pull Vercel env
+        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build
+        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy
+        run: npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
