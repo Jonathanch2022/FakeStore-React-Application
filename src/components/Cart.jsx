@@ -89,14 +89,14 @@ export default function Cart(props) {
             <div id="cart-container" className="cart-container cart-container-hidden" data-cart="cart" >
                 <div className="cartid0" data-cart="cart">
                     {
-                        cartList.map((item) => {
+                        (cartList) ? cartList.map((item) => {
                            
   
                             return (
 
                                 <CartItem key={item.id} id={item.id} orginid={item.id} title={item.title} quantity={item.quantity} price={item.price} image={(item.imageSrc) ? item.imageSrc : item.image} />
                             )
-                        })
+                        }) : []
                     }
                 </div>
                 <div className="cartid1" data-cart="cart">
