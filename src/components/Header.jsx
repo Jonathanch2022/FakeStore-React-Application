@@ -53,29 +53,28 @@ export default function Header() {
                     </div>
                
                 </div>
-                <Navbar bg="primary" variant="dark" expand="lg" sticky="top">
-                    <Container>
-                        <Navbar.Brand href="/">FakeStore</Navbar.Brand>
-                        <Navbar.Toggle aria-controls="main-navbar-nav" />
-                        <Navbar.Collapse id="main-navbar-nav">
-                            <Nav className="me-auto">
-                                <Nav.Link href="/">Home</Nav.Link>
-                                <Nav.Link href="/product-listing">Shop</Nav.Link>
-                                <Nav.Link href="/add-product">Add Product</Nav.Link>
-                                <Nav.Link href="/profile">My Account</Nav.Link>
-                                <Nav.Link href="/login">Login</Nav.Link>
-                            </Nav>
-                        </Navbar.Collapse>
-                        <label id="catagoryLabel">Category:   
+               <Navbar bg="primary" variant="dark" expand="lg" sticky="top">
+                <Container>
+                    <Navbar.Brand as={NavLink} to="/" end>FakeStore</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="main-navbar-nav" />
+                    <Navbar.Collapse id="main-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link as={NavLink} to="/" end>Home</Nav.Link>
+                            <Nav.Link as={NavLink} to="/product-listing">Shop</Nav.Link>
+                            <Nav.Link as={NavLink} to="/add-product">Add Product</Nav.Link>
+                            <Nav.Link as={NavLink} to="/profile">My Account</Nav.Link>
+                            <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
+                        </Nav>
+                        <label id="catagoryLabel">
+                            Category:
                             <select className="categorySelection" onChange={handleCategoryChange}>
                                 <option value="All">All</option>
-                            {
-                                options
-                            }
-                        </select>
+                                {options}
+                            </select>
                         </label>
-                    </Container>
-                </Navbar>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
             </header>
             
           
