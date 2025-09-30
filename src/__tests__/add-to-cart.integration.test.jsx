@@ -34,7 +34,7 @@ function Page() {
   );
 }
 
-describe('integration: add to cart updates header count', () => {
+describe('integration: add item to cart updates header count', () => {
   it('increments the cart count after clicking Add to Cart', async () => {
       const user = userEvent.setup();
       const { getByText, getByTestId, findByTestId } = renderWithProviders(<Page />);
