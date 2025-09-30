@@ -45,6 +45,6 @@ describe('integration: add item to cart updates header count', () => {
       const addBtn = getByText("Add to Cart");
     await user.click(addBtn);
     const after = await getByTestId("cart-count");
-    expect(after).toHaveTextContent('-1');
+    expect(after).toHaveTextContent('1');
   });
 });
