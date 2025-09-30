@@ -67,7 +67,7 @@ export default function Product(props) {
                 <div className="product-price">${value}</div>
                 <RateStar rating={props.rating} ratingCount={props.ratingCount} />
                 <Button variant="primary btn-space" onClick={handleClick}> View </Button>
-                <Button variant="primary" onClick={handleAddToCart} data-item={JSON.stringify(itemData)}> Add to cart </Button>
+                <Button variant="primary" aria-label="Add to Cart" onClick={handleAddToCart} data-item={JSON.stringify(itemData)}> Add to cart </Button>
             </div>
         </>
     )

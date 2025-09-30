@@ -102,7 +102,7 @@ export default function Cart(props) {
                 <div className="cartid1" data-cart="cart">
                     <div className="cart-total" data-cart="cart">
                         <label id="totle" data-cart="cart">Total: ${total}</label>
-                        <label id="items" data-cart="cart">Items: {items}</label>
+                        <label id="items" data-testid="cart-count" data-cart="cart">Items: {items}</label>                     
                     </div>
                     <button type="button" data-cart="cart" onClick={handleCheckout} >Check Out</button>
                    

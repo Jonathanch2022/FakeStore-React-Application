@@ -1,5 +1,5 @@
 import rateStar from '../assets/RatingStar.png'
-import { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 export default function RateStar(props) {
     let [stars, setStars] = useState(0);
     let [ratingCount, setRatingCount] = useState(props.ratingCount || 0)
@@ -25,7 +25,7 @@ export default function RateStar(props) {
     return (
 
         <div className="rating-stars-container">
-            <label className="rating-stars-label">{rateInfo}</label>
+            <label data-testid="count" className="rating-stars-label">{rateInfo}</label>
             <div id="star-container">{ stars } </div>
         </div>
       

@@ -42,6 +42,11 @@ export const counterSlice = createSlice({
                 if (!exist) {
                    
                     state.cartList.push(action.payload);
+                    for (let t in state.cartList) {
+
+                        state.items += parseInt(state.cartList[t].quanity);
+                        state.total += (parseInt(state.cartList[t].price) * parseInt(state.cartList[t].quanity));
+                    }
                    
                 }
                 else {
@@ -114,4 +119,5 @@ export const counterSlice = createSlice({
     }
 })
 
-export const { resetCart,updateItem, loadCart, removeItem, addToCart, updateCartStatus, setCart } = counterSlice.actions
+export const { resetCart, updateItem, loadCart, removeItem, addToCart, updateCartStatus, setCart } = counterSlice.actions;
+export default counterSlice.reducer;
