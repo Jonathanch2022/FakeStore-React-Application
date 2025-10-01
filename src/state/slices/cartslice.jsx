@@ -98,7 +98,6 @@ export const counterSlice = createSlice({
             const DataCart = localStorage.getItem("cart-1");
             
             const items = (DataCart) ? JSON.parse(DataCart) : [];
-            console.log(items);
             state.cartList = (items == null) ? [] : items;
            
 
