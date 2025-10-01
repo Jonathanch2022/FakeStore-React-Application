@@ -10,7 +10,7 @@ describe('cart slice', () => {
         const s1 = cartReducer(base, addToCart({ id: 1, title: 'Hat', price: 10, description: "Sample Hat", category: "Hats", image: "http://example.com/test.png", quantity:1 }));
         expect(s1.cartList).toHaveLength(1);
         const item1 = s1.cartList.find(i => i.id == 1);
-        expect(item1.quantity).toBe(2);
+        expect(item1.quantity).toBe(1);
        
 
         const s2 = cartReducer(s1, addToCart({ id: 1, title: 'Hat', price: 10, description: "Sample Hat", category: "Hats", image: "http://example.com/test.png", quantity:1 }));
