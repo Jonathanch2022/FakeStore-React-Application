@@ -41,8 +41,7 @@ export const counterSlice = createSlice({
                 }
                 if (!exist) {
 
-                    (state.cartList === null) ? state.cartList : [];
-                    console.log(state.cartList);
+               
                     state.cartList.push(action.payload);
                     for (let t in state.cartList) {
 
@@ -97,6 +96,7 @@ export const counterSlice = createSlice({
         loadCart: (state, action) => {
 
             const DataCart = localStorage.getItem("cart-1");
+            console.log(DataCart);
             const items = (DataCart) ? JSON.parse(DataCart) : [];
             state.cartList = items;
            
