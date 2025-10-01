@@ -52,7 +52,7 @@ export const counterSlice = createSlice({
                 }
                 else {
 
-                   // state.cartList = [];
+                  
 
                     for (let t in state.cartList) {
 
