@@ -1,53 +1,62 @@
-name: CI & Deploy
+﻿name: CI • Promote to main • Deploy
 
 on:
   push:
-    branches: [main, master]
+    branches: [master]
   pull_request:
-    branches: [main, master]
+    branches: [master]
+
+permissions:
+  contents: write  # needed to push to main
+
+concurrency:
+  group: promote-deploy-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: npm
+          cache: 'npm'
+      - run: npm ci
+      - run: npm test -- --ci --watchAll=false
 
-      - name: Install deps
-        run: npm ci
-
-      - name: Run tests
-        run: npm test -- --ci --watchAll=false
-
-  deploy:
-    needs: test               # <- only runs if "test" job succeeds
-    if: ${{ success() }}      # <- extra guard (redundant but explicit)
+  promote_and_deploy:
+    needs: test
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && needs.test.result == 'success' }}
     runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Promote current commit to main
+        run: |
+          # Set 'main' to the tested commit (fast or force-with-lease if needed)
+          git fetch origin main || true
+          git push --force-with-lease origin "$GITHUB_SHA":refs/heads/main
 
-      - name: Use Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: npm
+          cache: 'npm'
+      - run: npm ci
 
-      - name: Install deps
-        run: npm ci
-
-      # Example: Vercel deployment via CLI (replace with your method)
-      - name: Pull Vercel env
-        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Build
-        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Deploy
-        run: npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Vercel pull (prod)
+        run: npx vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+      - name: Build (prebake)
+        run: npx vercel build --prod --token="$VERCEL_TOKEN"
+      - name: Deploy (prebuilt → prod)
+        run: npx vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
