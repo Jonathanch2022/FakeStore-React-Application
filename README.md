@@ -1,158 +1,158 @@
-﻿🛒 FakeStore React Application
+# FakeStore React Application 🛒
 
-FakeStore is a modern, fully functional e-commerce frontend built with React. It integrates the FakeStore API to provide users with a simulated shopping experience that includes product listing, searching, viewing, editing, and cart management. This app is structured with reusable components, a global cart context, and persistent state via localStorage.
+[⬇️ **Download the latest source (ZIP)**](https://github.com/Jonathanch2022/FakeStore-React-Application/archive/refs/heads/master.zip)
 
-🚀 Features
+---
 
-Browse products from a live external API
+## Overview
 
-Search functionality with query param filtering
+**FakeStore React Application** is a modern e-commerce demo built with React. It fetches real-time data from the Fake Store API and allows users to browse, search, and view product details. The app demonstrates frontend development skills, API integration, component reusability, and state management in React.
 
-Detailed product views and editing capabilities
+---
 
-Add, update, and delete products (admin simulation)
+## Features
 
-Interactive cart using context and localStorage
+- 🛍️ Product listing and category filtering  
+- 🔍 Search functionality  
+- 🧾 Product detail view  
+- 💾 Persistent cart using localStorage  
+- ⚙️ State management using React Context or Redux Toolkit  
+- 🧭 Navigation via React Router  
+- 🧑‍💻 Modern component-based architecture  
+- 📱 Responsive UI for desktop and mobile
 
-Modular component-based architecture
+---
 
-Form validation and user input handling
+## Tech Stack
 
-🗂️ Pages Overview
+- **Frontend:** React, Vite, JSX  
+- **State Management:** React Context / Redux Toolkit  
+- **Routing:** React Router DOM  
+- **API:** Fake Store API  
+- **Styling:** CSS / Bootstrap / Custom components
 
-Home.jsx
+---
 
-Welcomes users with an intro
+## Installation
 
-Navigation to product listing
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
 
-ProductListing.jsx
+### Setup Steps
 
-Fetches and displays all products
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Jonathanch2022/FakeStore-React-Application.git
+   cd FakeStore-React-Application
+   ```
 
-Supports search filtering via URL query
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-Adds products to cart
+3. Start the application:
+   ```bash
+   npm run dev
+   ```
 
-ViewProduct.jsx
+4. Open your browser and visit:
+   ```bash
+   http://localhost:5173
+   ```
 
-Displays detailed info about a product
+---
 
-Add to cart with quantity selection
+## Project Structure
 
-Navigate to edit page
+```
+FakeStore-React-Application/
+├── public/
+│   └── index.html
+├── src/
+│   ├── api/
+│   ├── components/
+│   ├── context/
+│   ├── pages/
+│   ├── state/
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+├── package.json
+├── vite.config.js
+└── README.md
+```
 
-AddProduct.jsx
+---
 
-Admin-style page to create new products
+## API Endpoints
 
-Validates input before POSTing to API
+This app uses the [Fake Store API](https://fakestoreapi.com/) to fetch data.
 
-EditProduct.jsx
+**Examples:**
+- `GET /products` → List all products  
+- `GET /products/:id` → Get product details  
+- `GET /products/categories` → List categories  
+- `GET /products/category/:category` → Filter by category  
 
-Fetches product details by ID
+---
 
-Allows updating or deleting the product
+## Testing
 
-📦 Components
+Run unit and integration tests using:
+```bash
+npm test
+```
 
-Header.jsx
+Ensure your tests cover:
+- Component rendering  
+- User interactions (e.g., adding to cart)  
+- API responses and UI updates
 
-Navbar with navigation links
+---
 
-Integrated search bar
+## Deployment
 
-Toggleable cart icon
+You can deploy this project easily to **Vercel** or **Netlify**.  
+For Vercel:
+```bash
+npm run build
+vercel deploy
+```
 
-Cart.jsx
+---
 
-Container for cart items (shown/hidden dynamically)
+## Future Enhancements
 
-CartItem.jsx
+- 🧺 Checkout and order summary pages  
+- 🔐 Auth0 authentication  
+- 🧠 Advanced Redux selectors  
+- 💳 Payment gateway integration  
+- 🧪 Continuous Integration & Deployment (CI/CD)
 
-Displays individual cart item details
+---
 
-Allows quantity editing and removal
+## Contributing
 
-Product.jsx
+Pull requests are welcome!  
+1. Fork the repo  
+2. Create your feature branch (`git checkout -b feature-name`)  
+3. Commit changes (`git commit -m "Add new feature"`)  
+4. Push to your branch (`git push origin feature-name`)  
+5. Submit a pull request
 
-Displays product summary with "View" and "Add to Cart" buttons
+---
 
-RateStar.jsx
+## License
 
-Renders visual star rating based on rating value
+This project is licensed under the MIT License.
 
-🌐 State Management
+---
 
-CartContext.jsx
+## Author
 
-Provides cartItems and setCartItems via Context API
-
-Used by components like CartItem to sync cart state
-
-CartData Class
-
-Centralized class for constructing and storing cart item data
-
-Includes logic for updating and removing items
-
-💾 Persistence
-
-Cart data is saved to localStorage for session persistence
-
-Product data is fetched live via fetch() from FakeStore API
-
-📁 File Structure
-
-src/
-├── components/
-│   ├── Header.jsx
-│   ├── Cart.jsx
-│   ├── CartItem.jsx
-│   ├── Product.jsx
-│   ├── RateStar.jsx
-│   └── CartContext.jsx
-├── pages/
-│   ├── Home.jsx
-│   ├── ProductListing.jsx
-│   ├── ViewProduct.jsx
-│   ├── AddProduct.jsx
-│   └── EditProduct.jsx
-└── assets/
-    ├── shoppingCart.png
-    ├── placeholder.png
-    └── RatingStar.png
-
-🧪 Getting Started
-
-Clone the repo:
-
-git clone https://github.com/yourusername/fakestore-react.git
-cd fakestore-react
-
-Install dependencies:
-
-npm install
-
-Run the app:
-
-npm start
-
-Open http://localhost:3000 in your browser
-
-🔮 Future Improvements
-
-Authentication for product editing
-
-Better error handling on API failures
-
-Responsive mobile layout
-
-Backend for real product management
-
-📄 License
-
-This project is open-source and available under the MIT License.
-
-Created with ❤️ by Jonathan Hubbard – FakeStore is built to demonstrate full-stack integration, dynamic UI updates, and context-based global state.
+👨‍💻 **Jonathan Hubbard**  
+Full Stack Developer | React | Java | Python  
+GitHub: [Jonathanch2022](https://github.com/Jonathanch2022)
 
